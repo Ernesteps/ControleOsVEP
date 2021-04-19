@@ -1,0 +1,30 @@
+****************************************************************
+Erro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'nome_setor1' in 'field list'
+Data: 05/04/2021 Hora: 12:48
+Função Chamado: InserirSetorDAO
+Id Usuario Logado: 1
+****************************************************************
+Erro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'nome_setor1' in 'field list'
+Data: 05/04/2021 Hora: 12:48
+Função Chamado: AlterarSetorDAO
+Id Usuario Logado: 1
+****************************************************************
+Erro: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`db_os_vep`.`tb_alocar_equip`, CONSTRAINT `fk_tb_alocar_equip_tb_setor1` FOREIGN KEY (`id_setor`) REFERENCES `tb_setor` (`id_setor`) ON DELETE NO ACTION ON UPDATE NO ACTION)
+Data: 09/04/2021 Hora: 20:50
+Função Chamado: ExcluirSetorDAO
+Id Usuario Logado: 1
+****************************************************************
+Erro: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`db_os_vep`.`tb_alocar_equip`, CONSTRAINT `fk_tb_alocar_equip_tb_setor1` FOREIGN KEY (`id_setor`) REFERENCES `tb_setor` (`id_setor`) ON DELETE NO ACTION ON UPDATE NO ACTION)
+Data: 09/04/2021 Hora: 20:54
+Função Chamado: ExcluirSetorDAO
+Id Usuario Logado: 1
+****************************************************************
+Erro: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`db_os_vep`.`tb_equipamento`, CONSTRAINT `fk_tb_equipamento_tb_modelo1` FOREIGN KEY (`id_modelo`) REFERENCES `tb_modelo` (`id_modelo`) ON DELETE NO ACTION ON UPDATE NO ACTION)
+Data: 09/04/2021 Hora: 20:54
+Função Chamado: ExcluirModeloDAO
+Id Usuario Logado: 1
+****************************************************************
+Erro: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails (`db_os_vep`.`tb_equipamento`, CONSTRAINT `fk_tb_equipamento_tb_tipo1` FOREIGN KEY (`id_tipo`) REFERENCES `tb_tipo` (`id_tipo`) ON DELETE NO ACTION ON UPDATE NO ACTION)
+Data: 10/04/2021 Hora: 13:39
+Função Chamado: ExcluirTipoDAO
+Id Usuario Logado: 1
