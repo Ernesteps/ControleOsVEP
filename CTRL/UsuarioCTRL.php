@@ -67,4 +67,9 @@ class UsuarioCTRL
         $dao = new UsuarioDAO();
         return $dao->FiltrarUsuario($nome);
     }
+
+    public function ExcluirUsuarioCTRL($idUser, $idTipo){
+        $dao = new UsuarioDAO();
+        return $dao->ExcluirUsuarioDAO($idUser, $idTipo, UtilCTRL::CodigoUserLogado());
+    }
 }
