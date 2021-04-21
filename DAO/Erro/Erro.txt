@@ -28,3 +28,8 @@ Erro: SQLSTATE[23000]: Integrity constraint violation: 1451 Cannot delete or upd
 Data: 10/04/2021 Hora: 13:39
 Função Chamado: ExcluirTipoDAO
 Id Usuario Logado: 1
+****************************************************************
+Erro: SQLSTATE[42000]: Syntax error or access violation: 1065 Query was empty
+Data: 20/04/2021 Hora: 14:03
+Função Chamado: ExcluirUsuarioDAO
+Id Usuario Logado: 1

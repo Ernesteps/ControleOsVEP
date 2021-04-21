@@ -194,7 +194,7 @@ class UsuarioDAO extends Conexao
 
         $sql = new PDOStatement();
         $sql = $conexao->prepare($comando_sql);
-        $i=1;
+        $i = 1;
         $sql->bindValue($i++, $email);
         $sql->bindValue($i++, $email);
         $sql->setFetchMode(PDO::FETCH_ASSOC);
@@ -204,20 +204,69 @@ class UsuarioDAO extends Conexao
         return $result[0]['contar'];
     }
 
-    public function FiltrarUsuario($nome){
+    public function FiltrarUsuario($nome)
+    {
 
         $conexao = parent::retornaConexao();
 
         $comando_sql = 'select id_usuario, nome_usuario, tipo_usuario
 		                from tb_usuario
                         where nome_usuario like ?';
-        
+
         $sql = new PDOStatement();
         $sql = $conexao->prepare($comando_sql);
-        $sql->bindValue(1, '%'.$nome.'%');
+        $sql->bindValue(1, '%' . $nome . '%');
         $sql->setFetchMode(PDO::FETCH_ASSOC);
         $sql->execute();
 
-        return $sql->fetchAll();        
+        return $sql->fetchAll();
+    }
+
+    public function ExcluirUsuarioDAO($idUser, $idTipo, $UtilIdUser)
+    {
+        $conexao = parent::retornaConexao();
+
+        if ($idTipo == 1){
+            $comando_sql = 'delete from tb_usuario where id_usuario = ?';
+            $sql = new PDOStatement();
+            $sql = $conexao->prepare($comando_sql);
+            $sql->bindValue(1, $idUser);
+
+            try{
+                $sql->execute();
+                return 1;
+            }catch(Exception $ex){
+                parent::GravarErro($ex->getMessage(), $idUser, Excluir);
+                return -2;
+            }
+        }
+
+        if ($idTipo == 2 || $idTipo == 3) {
+            if ($idTipo == 2) {
+                $comando_sql = 'delete from tb_funcionario where id_usuario_fun = ?';
+            } else if ($idTipo == 3) {
+                $comando_sql = 'delete from tb_tecnico where id_usuario_tec = ?';
+            }
+            $sql = new PDOStatement();
+            $sql = $conexao->prepare($comando_sql);
+            $sql->bindValue(1, $idUser);
+            $conexao->beginTransaction();
+
+            try {
+                $sql->execute();
+
+                $comando_sql = 'delete from tb_usuario where id_usuario = ?';
+                $sql = $conexao->prepare($comando_sql);
+
+                $sql->bindValue(1, $idUser);
+                $sql->execute();
+                $conexao->commit();
+                return 1;
+            } catch (Exception $ex) {
+                $conexao->rollBack();
+                parent::GravarErro($ex->getMessage(), $UtilIdUser, Excluir);
+                return -2;
+            }
+        }
     }
 }

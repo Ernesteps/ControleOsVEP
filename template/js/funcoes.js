@@ -4,6 +4,12 @@ function CarregarDadosExcluir(id, nome) {
     $("#nome_excluir").html(nome); //HTML Preenche algo na tela, uma label ou descrição
 }
 
+function CarregarDadosExcluirUsuario(id, nome, tipo){
+    $("#cod_item").val(id);
+    $("#nome_excluir").html(nome);
+    $("#tipo_user").val(tipo);
+}
+
 function CarregarDadosTipoAlterar(id, nome) {
 
     $("#cod_alt").val(id); //Val pra jogar valor, input...

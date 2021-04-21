@@ -3,12 +3,16 @@
 require_once '../../CTRL/UsuarioCTRL.php';
 require_once '../../CTRL/UtilCTRL.php';
 
+$ctrl_usuario = new UsuarioCTRL();
 $nome_filtro = '';
 
 if (isset($_POST['btnFiltrar'])) {
-  $ctrl_usuario = new UsuarioCTRL();
   $nome_filtro = $_POST['nome_filtro'];
   $users = $ctrl_usuario->FiltrarUsuario($nome_filtro);
+} else if (isset($_POST['btn_excluir'])){
+  $cod = $_POST['cod_item'];
+  $tipo = $_POST['tipo_user'];
+  $ret = $ctrl_usuario->ExcluirUsuarioCTRL($cod, $tipo);
 }
 
 ?>
@@ -110,7 +114,7 @@ if (isset($_POST['btnFiltrar'])) {
                             <td><?= UtilCTRL::MostraTipoUser($users[$i]['tipo_usuario']) ?></td>
                             <td>
                               <a href="#" class="btn btn-warning btn-xs">Alterar</a>
-                              <a href="#" class="btn btn-danger btn-xs">Excluir</a>
+                              <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-excluir" onclick="CarregarDadosExcluirUsuario('<?= $users[$i]['id_usuario'] ?>','<?= $users[$i]['nome_usuario'] ?>','<?= $users[$i]['tipo_usuario'] ?>')">Excluir</a>
                             </td>
                           </tr>
                         <?php } ?>
@@ -139,7 +143,7 @@ if (isset($_POST['btnFiltrar'])) {
     <?php
 
     include_once '../../template/_footer.php';
-
+    include_once '../../template/_msg.php';
     ?>
 
 
