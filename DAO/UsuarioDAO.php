@@ -241,7 +241,7 @@ class UsuarioDAO extends Conexao
             }
         }
 
-        if ($idTipo == 2 || $idTipo == 3) {
+        if ($idTipo != 1) {
             if ($idTipo == 2) {
                 $comando_sql = 'delete from tb_funcionario where id_usuario_fun = ?';
             } else if ($idTipo == 3) {
