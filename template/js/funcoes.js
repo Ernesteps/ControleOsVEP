@@ -1,13 +1,6 @@
 function CarregarDadosExcluir(id, nome) {
-
     $("#cod_item").val(id); //Val pra jogar valor, input...
     $("#nome_excluir").html(nome); //HTML Preenche algo na tela, uma label ou descrição
-}
-
-function CarregarDadosExcluirUsuario(id, nome, tipo){
-    $("#cod_item").val(id);
-    $("#nome_excluir").html(nome);
-    $("#tipo_user").val(tipo);
 }
 
 function CarregarDadosTipoAlterar(id, nome) {
@@ -29,6 +22,8 @@ function CarregarDadosModeloAlterar(id, nome) {
 }
 
 function MostrarTipoUsuario(tipo) {
+
+    alert(tipo);
 
     if (tipo != '') {
         $("#divTipo123").show();

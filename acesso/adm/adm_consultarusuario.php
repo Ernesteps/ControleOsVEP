@@ -10,8 +10,8 @@ if (isset($_POST['btnFiltrar'])) {
   $nome_filtro = $_POST['nome_filtro'];
   $users = $ctrl_usuario->FiltrarUsuario($nome_filtro);
 } else if (isset($_POST['btn_excluir'])){
-  $cod = $_POST['cod_item'];
-  $tipo = $_POST['tipo_user'];
+  $cod = explode('-', $_POST['cod_item'])[0];
+  $tipo = explode('-', $_POST['cod_item'])[1];
   $ret = $ctrl_usuario->ExcluirUsuarioCTRL($cod, $tipo);
 }
 
@@ -113,8 +113,8 @@ if (isset($_POST['btnFiltrar'])) {
                             <td><?= $users[$i]['nome_usuario'] ?></td>
                             <td><?= UtilCTRL::MostraTipoUser($users[$i]['tipo_usuario']) ?></td>
                             <td>
-                              <a href="#" class="btn btn-warning btn-xs">Alterar</a>
-                              <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-excluir" onclick="CarregarDadosExcluirUsuario('<?= $users[$i]['id_usuario'] ?>','<?= $users[$i]['nome_usuario'] ?>','<?= $users[$i]['tipo_usuario'] ?>')">Excluir</a>
+                              <a href="adm_usuario_alterar.php?cod=<?= $users[$i]['id_usuario'] ?>" class="btn btn-warning btn-xs">Alterar</a>
+                              <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modal-excluir" onclick="CarregarDadosExcluir('<?= $users[$i]['id_usuario'] . '-' . $users[$i]['tipo_usuario'] ?>','<?= $users[$i]['nome_usuario'] ?>')">Excluir</a>
                             </td>
                           </tr>
                         <?php } ?>

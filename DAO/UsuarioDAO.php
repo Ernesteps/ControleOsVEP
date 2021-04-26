@@ -222,6 +222,38 @@ class UsuarioDAO extends Conexao
         return $sql->fetchAll();
     }
 
+    public function DetalharUsuario($id)
+    {
+        $conexao = parent::retornaConexao();
+
+        $comando_sql = 'select usu.id_usuario,
+                               usu.nome_usuario,
+                               usu.tipo_usuario,
+                               usu.cpf_usuario,
+                               tec.tel_tec,
+                               tec.email_tec,
+                               tec.endereco_tec,
+                               fun.id_setor,
+                               fun.tel_fun,
+                               fun.endereco_fun,
+                               fun.email_fun  
+                            from tb_usuario as usu
+                            left join tb_funcionario as fun
+                                on usu.id_usuario = fun.id_usuario_fun
+                            left join tb_tecnico as tec
+                                on usu.id_usuario = tec.id_usuario_tec
+                             where usu.id_usuario = ?';
+
+        $sql = new PDOStatement();
+        $sql = $conexao->prepare($comando_sql);
+        $i = 1;
+        $sql->bindValue($i++, $id);
+        $sql->setFetchMode(PDO::FETCH_ASSOC);
+        $sql->execute();
+
+        return $sql->fetchAll();
+    }
+
     public function ExcluirUsuarioDAO($idUser, $idTipo, $UtilIdUser)
     {
         $conexao = parent::retornaConexao();

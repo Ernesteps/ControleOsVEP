@@ -9,7 +9,6 @@
             </div>
 
             <input type="hidden" id="cod_item" name="cod_item">
-            <input type="hidden" id="tipo_user" name="tipo_user">
 
             <div class="modal-body">
                 <p>Deseja excluir o item: <label id="nome_excluir"></label></p>
