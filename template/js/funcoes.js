@@ -23,8 +23,6 @@ function CarregarDadosModeloAlterar(id, nome) {
 
 function MostrarTipoUsuario(tipo) {
 
-    alert(tipo);
-
     if (tipo != '') {
         $("#divTipo123").show();
         $("#btn_gravar").show();
@@ -51,7 +49,9 @@ function MostrarTipoUsuario(tipo) {
 function ValidarCPFCadastro(cpf) {
     if (cpf.trim() != '') {
         $.post('ajax/verificar_cpf_duplicado.php',
-            { cpf_user: cpf },
+            { cpf_user: cpf, 
+              id: $("#cod").val() != '' ? $("#cod").val() : null 
+            },
             function (retorno) {
                 if (retorno == 1) {
                     $("#cpf").val('');

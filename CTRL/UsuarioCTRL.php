@@ -7,6 +7,35 @@ require_once 'UtilCTRL.php';
 
 class UsuarioCTRL
 {
+    public function AlterarUserAdm(UsuarioVO $vo)
+    {
+        if ($vo->getNome() == '' || $vo->getCPF() == '') {
+            return 0;
+        }
+
+        $dao = new UsuarioDAO();
+        return $dao->AlterarUserAdm($vo);
+    }
+
+    public function AlterarUserFun(FuncionarioVO $vof)
+    {
+        if ($vof->getNome() == '' || $vof->getCPF() == '' || $vof->getEmail_fun() == '' || $vof->getTel_fun() == '' || $vof->getIdSetor() == '') {
+            return 0;
+        }
+
+        $dao = new UsuarioDAO();
+        return $dao->AlterarUserFun($vof);
+    }
+
+    public function AlterarUserTec(TecnicoVO $vot)
+    {
+        if ($vot->getNome() == '' || $vot->getCPF() == '' || $vot->getEmail_tec() == '' || $vot->getTel_tec() == '') {
+            return 0;
+        }
+        $dao = new UsuarioDAO();
+        return $dao->AlterarUserTec($vot);
+    }
+
     public function InserirUsuarioCTRL(UsuarioVO $vo)
     {
         if ($vo->getTipo() == '' || $vo->getNome() == '' || $vo->getCPF() == '') {
@@ -50,10 +79,10 @@ class UsuarioCTRL
         return $dao->InserirUserTec($vot, UtilCTRL::CodigoUserLogado());
     }
 
-    public function VerificarCPFCadastro($cpf)
+    public function VerificarCPFCadastro($cpf, $id)
     {
         $dao = new UsuarioDAO();
-        return $dao->VerificarCPFCadastro($cpf);
+        return $dao->VerificarCPFCadastro($cpf, $id);
     }
 
     public function VerificarEmailCadastro($email)
@@ -73,12 +102,9 @@ class UsuarioCTRL
         return $dao->ExcluirUsuarioDAO($idUser, $idTipo, UtilCTRL::CodigoUserLogado());
     }
 
-    public function DetalharUsuarioCTRL($id)
+    public function DetalharUsuarioCTRL($idUser)
     {
-        if ($id == ''){
-            return 0;
-        }
         $dao = new UsuarioDAO();
-        return $dao->DetalharUsuario($id);
+        return $dao->DetalharUsuario($idUser);
     }
 }

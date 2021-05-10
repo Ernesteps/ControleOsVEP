@@ -111,7 +111,7 @@ $setores = $ctrl_setor->ConsultarSetorCTRL();
           </div>
           <div class="card-body">
             <form method="post" action="adm_usuario.php">
-              <input type="hidden" name="cod" value="<?= $cod ?>">
+              <input type="hidden" id="cod">
 
               <div class="form-group">
                 <label>Tipo</label>

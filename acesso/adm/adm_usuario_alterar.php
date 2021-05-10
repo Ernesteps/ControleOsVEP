@@ -7,76 +7,75 @@ require_once '../../VO/FuncionarioVO.php';
 require_once '../../CTRL/SetorCTRL.php';
 require_once '../../CTRL/UtilCTRL.php';
 
-$ctrl_setor = new SetorCTRL();
-$ctrl = new UsuarioCTRL();
-
-$cod = '';
-$setor = '';
-$tipo_user = '';
-
 //Testa a URL: se tem a chave e o valor é numérico
 if (isset($_GET['cod']) && is_numeric($_GET['cod'])) {
-  $cod = $_GET['cod'];
-  $dados = $ctrl->DetalharUsuarioCTRL($cod);
-  $setores = $ctrl_setor->ConsultarSetorCTRL();
+  $ctrl = new UsuarioCTRL();
+  $dados = $ctrl->DetalharUsuarioCTRL($_GET['cod']);
 
-  $setor = $setores[0]['id_setor'];
-  $tipo_user = $dados[0]['tipo_usuario'];
+  if (count($dados) == 0) {
+    header('location: adm_consultarusuario.php');
+    exit;
 
-} else {
+  } else {
+    //Verifica se precisa carregar o setor(ou seja, cod user 2 - Funcionário)
+    if($dados[0]['tipo_usuario'] == 2){
+      $ctrl_setor = new SetorCTRL();
+      $setores = $ctrl_setor->ConsultarSetorCTRL();
+    }
+  }
+} else if (isset($_POST['btn_gravar'])) {
+  $ctrl = new UsuarioCTRL();
+
+  $tipo = $_POST['tipo'];
+
+  switch ($tipo) {
+    case '1':
+      $vo = new UsuarioVO();
+
+      $vo->setIdUser($_POST['cod']);
+      $vo->setNome($_POST['nome']);
+      $vo->setCPF(($_POST['cpf']));
+
+      $ret = $ctrl->AlterarUserAdm($vo);
+
+      break;
+
+    case '2':
+      $vo = new FuncionarioVO();
+
+      $vo->setIdUser($_POST['cod']);
+      $vo->setNome($_POST['nome']);
+      $vo->setCPF(($_POST['cpf']));
+
+      $vo->setEndereco_fun($_POST['endereco']);
+      $vo->setTel_fun($_POST['telefone']);
+      $vo->setEmail_fun($_POST['email']);
+      $vo->setIdSetor($_POST['setor']);
+
+      $ret = $ctrl->AlterarUserFun($vo);
+
+      break;
+
+    case '3':
+      $vo = new TecnicoVO();
+
+      $vo->setIdUser($_POST['cod']);
+      $vo->setNome($_POST['nome']);
+      $vo->setCPF(($_POST['cpf']));
+
+      $vo->setEndereco_tec($_POST['endereco']);
+      $vo->setTel_tec($_POST['telefone']);
+      $vo->setEmail_tec($_POST['email']);
+
+      $ret = $ctrl->AlterarUserTec($vo);
+
+      break;
+  }
+  header('location: adm_consultarusuario.php?ret=' . $ret);
+}else {
   header('location: adm_consultarusuario.php');
   exit;
 }
-
-// if (isset($_POST['btn_gravar'])) {
-//   $ctrl = new UsuarioCTRL();
-
-//   $tipo = $_POST['tipo'];
-
-//   switch ($tipo) {
-//     case '1':
-//       $vo = new UsuarioVO();
-
-//       $vo->setTipo($tipo);
-//       $vo->setNome($_POST['nome']);
-//       $vo->setCPF(($_POST['cpf']));
-
-//       $ret = $ctrl->InserirUsuarioCTRL($vo);
-
-//       break;
-
-//     case '2':
-//       $vo = new FuncionarioVO();
-
-//       $vo->setTipo($tipo);
-//       $vo->setNome($_POST['nome']);
-//       $vo->setCPF(($_POST['cpf']));
-
-//       $vo->setEndereco_fun($_POST['endereco']);
-//       $vo->setTel_fun($_POST['telefone']);
-//       $vo->setEmail_fun($_POST['email']);
-//       $vo->setIdSetor($_POST['setor']);
-
-//       $ret = $ctrl->InserirFuncionarioCTRL($vo);
-
-//       break;
-
-//     case '3':
-//       $vo = new TecnicoVO();
-
-//       $vo->setTipo($tipo);
-//       $vo->setNome($_POST['nome']);
-//       $vo->setCPF(($_POST['cpf']));
-
-//       $vo->setEndereco_tec($_POST['endereco']);
-//       $vo->setTel_tec($_POST['telefone']);
-//       $vo->setEmail_tec($_POST['email']);
-
-//       $ret = $ctrl->InserirTecnicoCTRL($vo);
-
-//       break;
-//   }
-// }
 
 ?>
 
@@ -131,57 +130,49 @@ if (isset($_GET['cod']) && is_numeric($_GET['cod'])) {
 
           </div>
           <div class="card-body">
-          
+
             <form method="post" action="adm_usuario_alterar.php">
-              <input type="hidden" name="cod" value="<?= $cod ?>">
+              <input type="hidden" name="tipo" id="tipo" value="<?= $dados[0]['tipo_usuario'] ?>">
+              <input type="hidden" name="cod" id="cod" value="<?= $dados[0]['id_usuario'] ?>">
 
               <div class="form-group">
-                <label>Tipo</label>
-                <select name="tipo" id="tipo" class="form-control">
-                  <?php for ($i = 0; $i < count($dados); $i++) { ?>
-                    <option value="<?= $dados[$i]['tipo_usuario']?>" <?= $dados[$i]['tipo_usuario'] == $tipo_user ? 'selected' : '' ?>><?= UtilCTRL::MostraTipoUser($dados[$i]['tipo_usuario']) ?></option>
-                  <?php } ?>
-                </select>
+                <label>Nome</label>
+                <input name="nome" id="nome" class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['nome_usuario'] ?>">
               </div>
 
-                <div class="form-group">
-                  <label>Nome</label>
-                  <input name="nome" id="nome" class="form-control" placeholder="Digite aqui..." value="<?= isset($dados) ? $dados[0]['nome_usuario'] : '' ?>">
-                </div>
+              <div class="form-group">
+                <label>CPF</label>
+                <input name="cpf" id="cpf" onchange="ValidarCPFCadastro(this.value)" class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['cpf_usuario'] ?>">
+                <label id="val_cpf" style="color: red; display: none"></label>
+              </div>
 
-                <div class="form-group">
-                  <label>CPF</label>
-                  <input name="cpf" id="cpf" onchange="ValidarCPFCadastro(this.value)" class="form-control" placeholder="Digite aqui..." value="<?= isset($dados) ? $dados[0]['cpf_usuario'] : '' ?>">
-                  <label id="val_cpf" style="color: red; display: none"></label>
-                </div>
-
-              <?php if($tipo_user == 2) { ?>
+              <?php if ($dados[0]['tipo_usuario'] == 2) { ?>
                 <div class="form-group">
                   <label>Setor</label>
                   <select name="setor" id="setor" class="form-control">
                     <option value="">Selecione</option>
-                    <?php for ($i = 0; $i < count($setores); $i++) { ?>
-                      <option value="<?= $setores[$i]['id_setor'] ?>" <?= $setores[$i]['id_setor'] == $setor ? 'selected' : '' ?>><?= $setores[$i]['nome_setor'] ?></option>
+                    <?php foreach ($setores as $item) { ?>
+                      <option value="<?= $item['id_setor'] ?>" <?= $item['id_setor'] == $dados[0]['id_setor'] ? 'selected' : '' ?>><?= $item['nome_setor'] ?></option>
                     <?php } ?>
                   </select>
                 </div>
               <?php } ?>
 
-              <?php if($tipo_user == 2 || $tipo_user == 3) { ?>
+              <?php if ($dados[0]['tipo_usuario'] == 2 || $dados[0]['tipo_usuario'] == 3) { ?>
                 <div class="form-group">
                   <label>E-mail</label>
-                  <input name="email" id="email" onchange="ValidarEmailCadastro(this.value)" class="form-control" placeholder="Digite aqui..." value="<?= isset($dados) ? $dados[0]['email_fun'] . $dados[0]['email_tec'] : '' ?>">
+                  <input name="email" id="email" onchange="ValidarEmailCadastro(this.value)" class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['tipo_usuario'] == 2 ? $dados[0]['email_fun'] : $dados[0]['email_tec'] ?>">
                   <label id="val_email" style="color: red; display: none"></label>
                 </div>
 
                 <div class="form-group">
                   <label>Telefone</label>
-                  <input name="telefone" id="telefone" class="form-control" placeholder="Digite aqui..." value="<?= isset($dados) ? $dados[0]['tel_fun'] . $dados[0]['tel_tec'] : '' ?>">
+                  <input name="telefone" id="telefone" class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['tipo_usuario'] == 2 ? $dados[0]['tel_fun'] : $dados[0]['tel_tec'] ?>">
                 </div>
 
                 <div class="form-group">
                   <label>Endereço</label>
-                  <input name="endereco" id="endereco" class="form-control" placeholder="Digite aqui..." value="<?= isset($dados) ? $dados[0]['endereco_fun'] . $dados[0]['endereco_tec'] : '' ?>">
+                  <input name="endereco" id="endereco" class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['tipo_usuario'] == 2 ? $dados[0]['endereco_fun'] : $dados[0]['endereco_tec'] ?>">
                 </div>
               <?php } ?>
 

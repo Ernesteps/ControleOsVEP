@@ -16,9 +16,133 @@ define('ExcluirFunc', 'ExcluirUserFuncDAO');
 
 class UsuarioDAO extends Conexao
 {
+
+    /** @var PDO */
+    private $conexao;
+
+    /** @var PDOStatement */
+    private $sql;
+
+    public function __construct()
+    {
+        $this->conexao = parent::retornaConexao();
+        $this->sql = new PDOStatement();
+    }
+
+    public function AlterarUserAdm(UsuarioVO $vo){
+
+        $comando_sql = 'update tb_usuario
+                        set nome_usuario = ?, 
+                            cpf_usuario = ?
+                        where id_usuario = ?';
+
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $i=1;
+        $this->sql->bindValue($i++, $vo->getNome());
+        $this->sql->bindValue($i++, $vo->getCPF());
+        $this->sql->bindValue($i++, $vo->getIdUser());
+
+        try{
+            $this->sql->execute();
+            return 1;   
+        }catch (Exception $ex){
+            parent::GravarErro($ex->getMessage(), $vo->getIdUser(), Alterar);
+            return -1;
+        }
+    }
+
+    public function AlterarUserFun(FuncionarioVO $vo){
+        
+        $comando_sql = 'update tb_usuario
+                        set nome_usuario = ?, 
+                            cpf_usuario = ?
+                        where id_usuario = ?';
+
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $i=1;
+        $this->sql->bindValue($i++, $vo->getNome());
+        $this->sql->bindValue($i++, $vo->getCPF());
+        $this->sql->bindValue($i++, $vo->getIdUser());
+
+        $this->conexao->beginTransaction();
+
+        try{
+            $this->sql->execute();
+
+            $comando_sql = 'update tb_funcionario
+                                set email_fun = ?,
+                                    tel_fun = ?,
+                                    endereco_fun = ?,
+                                    id_setor = ?
+                                where id_usuario_fun = ?';
+            
+            $this->sql = $this->conexao->prepare($comando_sql);
+
+            $i=1;
+            $this->sql->bindValue($i++, $vo->getEmail_fun());
+            $this->sql->bindValue($i++, $vo->getTel_fun());
+            $this->sql->bindValue($i++, $vo->getEndereco_fun());
+            $this->sql->bindValue($i++, $vo->getIdSetor());
+            $this->sql->bindValue($i++, $vo->getIdUser());
+
+            $this->sql->execute();
+            $this->conexao->commit();
+
+            return 1; 
+
+        }catch (Exception $ex){
+            $this->conexao->rollBack();
+            parent::GravarErro($ex->getMessage(), $vo->getIdUser(), AlterarFunc);
+            return -1;
+        }
+    }
+
+    public function AlterarUserTec(TecnicoVO $vo){
+        
+        $comando_sql = 'update tb_usuario
+                        set nome_usuario = ?, 
+                            cpf_usuario = ?
+                        where id_usuario = ?';
+
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $i=1;
+        $this->sql->bindValue($i++, $vo->getNome());
+        $this->sql->bindValue($i++, $vo->getCPF());
+        $this->sql->bindValue($i++, $vo->getIdUser());
+
+        $this->conexao->beginTransaction();
+
+        try{
+            $this->sql->execute();
+
+            $comando_sql = 'update tb_tecnico
+                                set email_tec = ?,
+                                    tel_tec = ?,
+                                    endereco_tec = ?
+                                where id_usuario_tec = ?';
+            
+            $this->sql = $this->conexao->prepare($comando_sql);
+
+            $i=1;
+            $this->sql->bindValue($i++, $vo->getEmail_tec());
+            $this->sql->bindValue($i++, $vo->getTel_tec());
+            $this->sql->bindValue($i++, $vo->getEndereco_tec());
+            $this->sql->bindValue($i++, $vo->getIdUser());
+
+            $this->sql->execute();
+            $this->conexao->commit();
+
+            return 1; 
+
+        }catch (Exception $ex){
+            $this->conexao->rollBack();
+            parent::GravarErro($ex->getMessage(), $vo->getIdUser(), AlterarTec);
+            return -1;
+        }
+    }
+
     public function InserirUsuarioDAO(UsuarioVO $vo, $idUser)
     {
-        $conexao = parent::retornaConexao();
         $comando_sql = 'insert into tb_usuario
                         (tipo_usuario, 
                         nome_usuario, 
@@ -28,19 +152,18 @@ class UsuarioDAO extends Conexao
                         data_cadastro) 
                         value (?,?,?,?,?,?)';
 
-        $sql = new PDOStatement();
-        $sql = $conexao->prepare($comando_sql);
+        $this->sql = $this->conexao->prepare($comando_sql);
 
         $i = 1;
-        $sql->bindValue($i++, $vo->getTipo());
-        $sql->bindValue($i++, $vo->getNome());
-        $sql->bindValue($i++, $vo->getCPF());
-        $sql->bindValue($i++, $vo->getSenha());
-        $sql->bindValue($i++, $vo->getStatus());
-        $sql->bindValue($i++, $vo->getDtCad());
+        $this->sql->bindValue($i++, $vo->getTipo());
+        $this->sql->bindValue($i++, $vo->getNome());
+        $this->sql->bindValue($i++, $vo->getCPF());
+        $this->sql->bindValue($i++, $vo->getSenha());
+        $this->sql->bindValue($i++, $vo->getStatus());
+        $this->sql->bindValue($i++, $vo->getDtCad());
 
         try {
-            $sql->execute();
+            $this->sql->execute();
             return 1;
         } catch (Exception $ex) {
             parent::GravarErro($ex->getMessage(), $idUser, Inserir);
@@ -50,7 +173,6 @@ class UsuarioDAO extends Conexao
 
     public function InserirUserTec(TecnicoVO $vo, $idUser)
     {
-        $conexao = parent::retornaConexao();
         $comando_sql = 'insert into tb_usuario
                         (tipo_usuario,
                         nome_usuario,
@@ -60,25 +182,24 @@ class UsuarioDAO extends Conexao
                         data_cadastro)
                         value (?,?,?,?,?,?)';
 
-        $sql = new PDOStatement();
-        $sql = $conexao->prepare($comando_sql);
+        $this->sql = $this->conexao->prepare($comando_sql);
 
         $i = 1;
-        $sql->bindValue($i++, $vo->getTipo());
-        $sql->bindValue($i++, $vo->getNome());
-        $sql->bindValue($i++, $vo->getCPF());
-        $sql->bindValue($i++, $vo->getSenha());
-        $sql->bindValue($i++, $vo->getStatus());
-        $sql->bindValue($i++, $vo->getDtCad());
+        $this->sql->bindValue($i++, $vo->getTipo());
+        $this->sql->bindValue($i++, $vo->getNome());
+        $this->sql->bindValue($i++, $vo->getCPF());
+        $this->sql->bindValue($i++, $vo->getSenha());
+        $this->sql->bindValue($i++, $vo->getStatus());
+        $this->sql->bindValue($i++, $vo->getDtCad());
 
-        $conexao->beginTransaction();
+        $this->conexao->beginTransaction();
 
         try {
             //Inserção na tb_usuario
-            $sql->execute();
+            $this->sql->execute();
 
             //Recuperar o ID do usuario cadastrado
-            $id_user = $conexao->lastInsertId();
+            $id_user = $this->conexao->lastInsertId();
 
             $comando_sql = 'insert into tb_tecnico
                             (id_usuario_tec,
@@ -87,25 +208,25 @@ class UsuarioDAO extends Conexao
                             endereco_tec)
                             value (?,?,?,?)';
 
-            $sql = $conexao->prepare($comando_sql);
+            $this->sql = $this->conexao->prepare($comando_sql);
 
             $i = 1;
-            $sql->bindValue($i++, $id_user);
-            $sql->bindValue($i++, $vo->getEmail_tec());
-            $sql->bindValue($i++, $vo->getTel_tec());
-            $sql->bindValue($i++, $vo->getEndereco_tec());
+            $this->sql->bindValue($i++, $id_user);
+            $this->sql->bindValue($i++, $vo->getEmail_tec());
+            $this->sql->bindValue($i++, $vo->getTel_tec());
+            $this->sql->bindValue($i++, $vo->getEndereco_tec());
 
             //Inserção na tb_tecnico
-            $sql->execute();
+            $this->sql->execute();
 
             //Confirmar a Transação
-            $conexao->commit();
+            $this->conexao->commit();
 
             return 1;
         } catch (Exception $ex) {
 
             //echo $ex;
-            $conexao->rollBack();
+            $this->conexao->rollBack();
             parent::GravarErro($ex->getMessage(), $idUser, InserirTec);
             return -1;
         }
@@ -113,7 +234,6 @@ class UsuarioDAO extends Conexao
 
     public function InserirUserFunc(FuncionarioVO $vo, $idUser)
     {
-        $conexao = parent::retornaConexao();
         $comando_sql = 'insert into tb_usuario
                         (tipo_usuario,
                         nome_usuario,
@@ -123,23 +243,22 @@ class UsuarioDAO extends Conexao
                         data_cadastro)
                         value (?,?,?,?,?,?)';
 
-        $sql = new PDOStatement();
-        $sql = $conexao->prepare($comando_sql);
+        $this->sql = $this->conexao->prepare($comando_sql);
 
         $i = 1;
-        $sql->bindValue($i++, $vo->getTipo());
-        $sql->bindValue($i++, $vo->getNome());
-        $sql->bindValue($i++, $vo->getCPF());
-        $sql->bindValue($i++, $vo->getSenha());
-        $sql->bindValue($i++, $vo->getStatus());
-        $sql->bindValue($i++, $vo->getDtCad());
+        $this->sql->bindValue($i++, $vo->getTipo());
+        $this->sql->bindValue($i++, $vo->getNome());
+        $this->sql->bindValue($i++, $vo->getCPF());
+        $this->sql->bindValue($i++, $vo->getSenha());
+        $this->sql->bindValue($i++, $vo->getStatus());
+        $this->sql->bindValue($i++, $vo->getDtCad());
 
-        $conexao->beginTransaction();
+        $this->conexao->beginTransaction();
 
         try {
 
-            $sql->execute();
-            $id_user = $conexao->lastInsertId();
+            $this->sql->execute();
+            $id_user = $this->conexao->lastInsertId();
 
             $comando_sql = 'insert into tb_funcionario
                             (id_usuario_fun,
@@ -149,83 +268,83 @@ class UsuarioDAO extends Conexao
                             id_setor)
                             value (?,?,?,?,?)';
 
-            $sql = $conexao->prepare($comando_sql);
+            $this->sql = $this->conexao->prepare($comando_sql);
 
             $i = 1;
-            $sql->bindValue($i++, $id_user);
-            $sql->bindValue($i++, $vo->getEmail_fun());
-            $sql->bindValue($i++, $vo->getTel_fun());
-            $sql->bindValue($i++, $vo->getEndereco_fun());
-            $sql->bindValue($i++, $vo->getIdSetor());
+            $this->sql->bindValue($i++, $id_user);
+            $this->sql->bindValue($i++, $vo->getEmail_fun());
+            $this->sql->bindValue($i++, $vo->getTel_fun());
+            $this->sql->bindValue($i++, $vo->getEndereco_fun());
+            $this->sql->bindValue($i++, $vo->getIdSetor());
 
-            $sql->execute();
-            $conexao->commit();
+            $this->sql->execute();
+            $this->conexao->commit();
             return 1;
         } catch (Exception $ex) {
 
             //echo $ex;
-            $conexao->rollBack();
+            $this->conexao->rollBack();
             parent::GravarErro($ex->getMessage(), $idUser, InserirFunc);
             return -1;
         }
     }
 
-    public function VerificarCPFCadastro($cpf)
+    public function VerificarCPFCadastro($cpf, $id)
     {
-        $conexao = parent::retornaConexao();
         $comando_sql = 'select count(cpf_usuario) as contar
                         from tb_usuario where cpf_usuario = ?';
 
-        $sql = new PDOStatement();
-        $sql = $conexao->prepare($comando_sql);
-        $sql->bindValue(1, $cpf);
-        $sql->setFetchMode(PDO::FETCH_ASSOC);
-        $sql->execute();
+        if($id != null){
+            $comando_sql .= ' and id_usuario != ?';
+        }
 
-        $result = $sql->fetchAll();
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $this->sql->bindValue(1, $cpf);
+
+        if($id != null){
+            $this->sql->bindValue(2, $id);
+        }
+
+        $this->sql->setFetchMode(PDO::FETCH_ASSOC);
+        $this->sql->execute();
+
+        $result = $this->sql->fetchAll();
         return $result[0]['contar'];
     }
 
     public function VerificarEmailCadastro($email)
     {
-        $conexao = parent::retornaConexao();
         $comando_sql = 'select (SELECT COUNT(email_tec) FROM tb_tecnico WHERE email_tec = ?) +
                         (SELECT COUNT(email_fun) FROM tb_funcionario WHERE email_fun = ?) as contar';
 
-        $sql = new PDOStatement();
-        $sql = $conexao->prepare($comando_sql);
+        $this->sql = $this->conexao->prepare($comando_sql);
         $i = 1;
-        $sql->bindValue($i++, $email);
-        $sql->bindValue($i++, $email);
-        $sql->setFetchMode(PDO::FETCH_ASSOC);
-        $sql->execute();
+        $this->sql->bindValue($i++, $email);
+        $this->sql->bindValue($i++, $email);
+        $this->sql->setFetchMode(PDO::FETCH_ASSOC);
+        $this->sql->execute();
 
-        $result = $sql->fetchAll();
+        $result = $this->sql->fetchAll();
         return $result[0]['contar'];
     }
 
     public function FiltrarUsuario($nome)
     {
 
-        $conexao = parent::retornaConexao();
-
         $comando_sql = 'select id_usuario, nome_usuario, tipo_usuario
 		                from tb_usuario
                         where nome_usuario like ?';
 
-        $sql = new PDOStatement();
-        $sql = $conexao->prepare($comando_sql);
-        $sql->bindValue(1, '%' . $nome . '%');
-        $sql->setFetchMode(PDO::FETCH_ASSOC);
-        $sql->execute();
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $this->sql->bindValue(1, '%' . $nome . '%');
+        $this->sql->setFetchMode(PDO::FETCH_ASSOC);
+        $this->sql->execute();
 
-        return $sql->fetchAll();
+        return $this->sql->fetchAll();
     }
 
-    public function DetalharUsuario($id)
+    public function DetalharUsuario($idUser)
     {
-        $conexao = parent::retornaConexao();
-
         $comando_sql = 'select usu.id_usuario,
                                usu.nome_usuario,
                                usu.tipo_usuario,
@@ -244,28 +363,25 @@ class UsuarioDAO extends Conexao
                                 on usu.id_usuario = tec.id_usuario_tec
                              where usu.id_usuario = ?';
 
-        $sql = new PDOStatement();
-        $sql = $conexao->prepare($comando_sql);
+        $this->sql = $this->conexao->prepare($comando_sql);
         $i = 1;
-        $sql->bindValue($i++, $id);
-        $sql->setFetchMode(PDO::FETCH_ASSOC);
-        $sql->execute();
+        $this->sql->bindValue($i++, $idUser);
+        $this->sql->setFetchMode(PDO::FETCH_ASSOC);
+        $this->sql->execute();
 
-        return $sql->fetchAll();
+        return $this->sql->fetchAll();
     }
 
     public function ExcluirUsuarioDAO($idUser, $idTipo, $UtilIdUser)
     {
-        $conexao = parent::retornaConexao();
 
         if ($idTipo == 1){
             $comando_sql = 'delete from tb_usuario where id_usuario = ?';
-            $sql = new PDOStatement();
-            $sql = $conexao->prepare($comando_sql);
-            $sql->bindValue(1, $idUser);
+            $this->sql = $this->conexao->prepare($comando_sql);
+            $this->sql->bindValue(1, $idUser);
 
             try{
-                $sql->execute();
+                $this->sql->execute();
                 return 1;
             }catch(Exception $ex){
                 parent::GravarErro($ex->getMessage(), $idUser, Excluir);
@@ -279,23 +395,22 @@ class UsuarioDAO extends Conexao
             } else if ($idTipo == 3) {
                 $comando_sql = 'delete from tb_tecnico where id_usuario_tec = ?';
             }
-            $sql = new PDOStatement();
-            $sql = $conexao->prepare($comando_sql);
-            $sql->bindValue(1, $idUser);
-            $conexao->beginTransaction();
+            $this->sql = $this->conexao->prepare($comando_sql);
+            $this->sql->bindValue(1, $idUser);
+            $this->conexao->beginTransaction();
 
             try {
-                $sql->execute();
+                $this->sql->execute();
 
                 $comando_sql = 'delete from tb_usuario where id_usuario = ?';
-                $sql = $conexao->prepare($comando_sql);
+                $this->sql = $this->conexao->prepare($comando_sql);
 
-                $sql->bindValue(1, $idUser);
-                $sql->execute();
-                $conexao->commit();
+                $this->sql->bindValue(1, $idUser);
+                $this->sql->execute();
+                $this->conexao->commit();
                 return 1;
             } catch (Exception $ex) {
-                $conexao->rollBack();
+                $this->conexao->rollBack();
                 parent::GravarErro($ex->getMessage(), $UtilIdUser, Excluir);
                 return -2;
             }
