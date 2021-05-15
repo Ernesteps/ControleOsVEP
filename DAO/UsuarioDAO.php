@@ -29,7 +29,30 @@ class UsuarioDAO extends Conexao
         $this->sql = new PDOStatement();
     }
 
-    public function AlterarUserAdm(UsuarioVO $vo){
+    public function ValidarLogin($cpf)
+    {
+        $comando_sql = 'select 
+                            usu.id_usuario, 
+                            usu.tipo_usuario, 
+                            usu.senha_usuario
+                            fun.id_setor
+                        from tb_usuario as usu
+                    left join tb_funcionario as fun
+                        on usu.id_usuario = fun.id_usuario_fun
+                    where usu.cpf_usuario = ? and usu.status_usuario = ?';
+        $this->sql = $this->conexao->prepare($comando_sql);
+
+        $i=1;
+        $this->sql->bindValue($i++, $cpf);
+        $this->sql->bindValue($i++, 1);
+        $this->sql->setFetchMode(PDO::FETCH_ASSOC);
+        $this->sql->execute();
+
+        return $this->sql->fetchAll();
+    }
+
+    public function AlterarUserAdm(UsuarioVO $vo)
+    {
 
         $comando_sql = 'update tb_usuario
                         set nome_usuario = ?, 
@@ -37,36 +60,37 @@ class UsuarioDAO extends Conexao
                         where id_usuario = ?';
 
         $this->sql = $this->conexao->prepare($comando_sql);
-        $i=1;
+        $i = 1;
         $this->sql->bindValue($i++, $vo->getNome());
         $this->sql->bindValue($i++, $vo->getCPF());
         $this->sql->bindValue($i++, $vo->getIdUser());
 
-        try{
+        try {
             $this->sql->execute();
-            return 1;   
-        }catch (Exception $ex){
+            return 1;
+        } catch (Exception $ex) {
             parent::GravarErro($ex->getMessage(), $vo->getIdUser(), Alterar);
             return -1;
         }
     }
 
-    public function AlterarUserFun(FuncionarioVO $vo){
-        
+    public function AlterarUserFun(FuncionarioVO $vo)
+    {
+
         $comando_sql = 'update tb_usuario
                         set nome_usuario = ?, 
                             cpf_usuario = ?
                         where id_usuario = ?';
 
         $this->sql = $this->conexao->prepare($comando_sql);
-        $i=1;
+        $i = 1;
         $this->sql->bindValue($i++, $vo->getNome());
         $this->sql->bindValue($i++, $vo->getCPF());
         $this->sql->bindValue($i++, $vo->getIdUser());
 
         $this->conexao->beginTransaction();
 
-        try{
+        try {
             $this->sql->execute();
 
             $comando_sql = 'update tb_funcionario
@@ -75,10 +99,10 @@ class UsuarioDAO extends Conexao
                                     endereco_fun = ?,
                                     id_setor = ?
                                 where id_usuario_fun = ?';
-            
+
             $this->sql = $this->conexao->prepare($comando_sql);
 
-            $i=1;
+            $i = 1;
             $this->sql->bindValue($i++, $vo->getEmail_fun());
             $this->sql->bindValue($i++, $vo->getTel_fun());
             $this->sql->bindValue($i++, $vo->getEndereco_fun());
@@ -88,31 +112,31 @@ class UsuarioDAO extends Conexao
             $this->sql->execute();
             $this->conexao->commit();
 
-            return 1; 
-
-        }catch (Exception $ex){
+            return 1;
+        } catch (Exception $ex) {
             $this->conexao->rollBack();
             parent::GravarErro($ex->getMessage(), $vo->getIdUser(), AlterarFunc);
             return -1;
         }
     }
 
-    public function AlterarUserTec(TecnicoVO $vo){
-        
+    public function AlterarUserTec(TecnicoVO $vo)
+    {
+
         $comando_sql = 'update tb_usuario
                         set nome_usuario = ?, 
                             cpf_usuario = ?
                         where id_usuario = ?';
 
         $this->sql = $this->conexao->prepare($comando_sql);
-        $i=1;
+        $i = 1;
         $this->sql->bindValue($i++, $vo->getNome());
         $this->sql->bindValue($i++, $vo->getCPF());
         $this->sql->bindValue($i++, $vo->getIdUser());
 
         $this->conexao->beginTransaction();
 
-        try{
+        try {
             $this->sql->execute();
 
             $comando_sql = 'update tb_tecnico
@@ -120,10 +144,10 @@ class UsuarioDAO extends Conexao
                                     tel_tec = ?,
                                     endereco_tec = ?
                                 where id_usuario_tec = ?';
-            
+
             $this->sql = $this->conexao->prepare($comando_sql);
 
-            $i=1;
+            $i = 1;
             $this->sql->bindValue($i++, $vo->getEmail_tec());
             $this->sql->bindValue($i++, $vo->getTel_tec());
             $this->sql->bindValue($i++, $vo->getEndereco_tec());
@@ -132,9 +156,8 @@ class UsuarioDAO extends Conexao
             $this->sql->execute();
             $this->conexao->commit();
 
-            return 1; 
-
-        }catch (Exception $ex){
+            return 1;
+        } catch (Exception $ex) {
             $this->conexao->rollBack();
             parent::GravarErro($ex->getMessage(), $vo->getIdUser(), AlterarTec);
             return -1;
@@ -294,14 +317,14 @@ class UsuarioDAO extends Conexao
         $comando_sql = 'select count(cpf_usuario) as contar
                         from tb_usuario where cpf_usuario = ?';
 
-        if($id != null){
+        if ($id != null) {
             $comando_sql .= ' and id_usuario != ?';
         }
 
         $this->sql = $this->conexao->prepare($comando_sql);
         $this->sql->bindValue(1, $cpf);
 
-        if($id != null){
+        if ($id != null) {
             $this->sql->bindValue(2, $id);
         }
 
@@ -375,15 +398,15 @@ class UsuarioDAO extends Conexao
     public function ExcluirUsuarioDAO($idUser, $idTipo, $UtilIdUser)
     {
 
-        if ($idTipo == 1){
+        if ($idTipo == 1) {
             $comando_sql = 'delete from tb_usuario where id_usuario = ?';
             $this->sql = $this->conexao->prepare($comando_sql);
             $this->sql->bindValue(1, $idUser);
 
-            try{
+            try {
                 $this->sql->execute();
                 return 1;
-            }catch(Exception $ex){
+            } catch (Exception $ex) {
                 parent::GravarErro($ex->getMessage(), $idUser, Excluir);
                 return -2;
             }

@@ -127,7 +127,14 @@ function ValidarTela(tela) {
                 ret = false;
             }
             break;
-    }
+
+        case 15: //Tela de Acesso
+            if($("#cpf").val().trim() == '' || $("#pass").val().trim() == ''){
+                toastr.warning(RetornarMsg(0));
+                ret = false;
+            }
+            break;
+        }
 
     return ret;
 }

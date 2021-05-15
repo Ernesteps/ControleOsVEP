@@ -72,9 +72,14 @@ if (isset($_POST['btn_gravar'])) {
 
                     <form method="post" action="func_meusdados.php">
 
-                    <div class="form-group">
+                        <div class="form-group">
                             <label>Nome</label>
-                            <input name="nome" id="nome" class="form-control" placeholder="Digite aqui...">
+                            <input name="nome" id="nome" readonly class="form-control" placeholder="Digite aqui...">
+                        </div>
+
+                        <div class="form-group">
+                            <label>CPF</label>
+                            <input name="cpf" id="cpf" readonly class="form-control" placeholder="Digite aqui...">
                         </div>
 
                         <div class="form-group">

@@ -21,5 +21,9 @@ if (isset($ret)) {
         case 1:
             echo "<script>toastr.success(RetornarMsg(1))</script>";
             break;
+        
+        case 2:
+            echo "<script>toastr.success(RetornarMsg(2))</script>";
+            break;
     }
 }

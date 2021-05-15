@@ -7,6 +7,53 @@ require_once 'UtilCTRL.php';
 
 class UsuarioCTRL
 {
+    public function ValidarLogin($cpf, $senha)
+    {
+        if (trim($$senha) == '' || trim($cpf) == '') {
+            return 0;
+        }
+
+        $dao = new UsuarioDAO();
+        $user = $dao->ValidarLogin($cpf);
+
+        //Verifica se encontrou o user
+        if (count($user) == 0) {
+            return 2;
+        }
+
+        $senha_hash = $user[0]['senha_usuario'];
+
+        //Verificar se a senha bate
+        if (password_verify($senha, $senha_hash)) {
+            $tipo = $user[0]['tipo_usuario'];
+            UtilCTRL::CriarSessao(
+                                $user[0]['id_usuario'], 
+                                $user[0]['tipo_usuario'], 
+                                $user[0]['id_setor']
+                                );
+
+            switch($tipo){
+                case 1:
+                    header('location: http://localhost/ControleosVEP/acesso/adm/adm_usuario.php');
+                    exit;
+                    break;
+
+                case 2:
+                    header('location: http://localhost/ControleosVEP/acesso/funcionario/func_meusdados.php');
+                    exit;
+                    break;
+
+                 case 3:
+                    header('location: http://localhost/ControleosVEP/acesso/tecnico/tec_meuschamados.php');
+                    exit;
+                    break;
+            }
+        } else {
+
+            return 2;
+        }
+    }
+
     public function AlterarUserAdm(UsuarioVO $vo)
     {
         if ($vo->getNome() == '' || $vo->getCPF() == '') {
@@ -97,7 +144,8 @@ class UsuarioCTRL
         return $dao->FiltrarUsuario($nome);
     }
 
-    public function ExcluirUsuarioCTRL($idUser, $idTipo){
+    public function ExcluirUsuarioCTRL($idUser, $idTipo)
+    {
         $dao = new UsuarioDAO();
         return $dao->ExcluirUsuarioDAO($idUser, $idTipo, UtilCTRL::CodigoUserLogado());
     }

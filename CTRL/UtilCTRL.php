@@ -2,6 +2,41 @@
 
 class UtilCTRL
 {
+    private static function IniciarSessao()
+    {
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+    }
+
+    public static function CriarSessao($id_user, $tipo, $idSetor)
+    {
+        self::IniciarSessao(); //Self somente statico
+        $_SESSION['cod'] = $id_user;
+        $_SESSION['tipo'] = $tipo;
+        $_SESSION['setor'] = $idSetor;
+    }
+
+    public static function Deslogar(){
+        self::IniciarSessao();
+        unset($_SESSION['cod']);
+        unset($_SESSION['tipo']);
+        unset($_SESSION['setor']);
+
+        self::VoltarPaginaLogin();
+    }
+
+    public static function VerificarLogado(){
+        if(!isset($_SESSION['cod']) || $_SESSION['cod'] == '' ){
+            self::VoltarPaginaLogin();
+        }
+    }
+
+    public static function VoltarPaginaLogin(){
+        header('location: http://localhost/ControleosVEP/acesso/login/acessar.php');
+        exit;
+    }
+
     public static function MostraTipoUser($tipo)
     {
         $nome = '';
@@ -22,7 +57,20 @@ class UtilCTRL
 
     public static function CodigoUserLogado()
     {
-        return 1; //Fixo por enquanto...
+        self::IniciarSessao();
+        return $_SESSION['cod'];
+    }
+
+    public static function TipoUserLogado()
+    {
+        self::IniciarSessao();
+        return $_SESSION['tipo'];
+    }
+
+    public static function SetorUserLogado()
+    {
+        self::IniciarSessao();
+        return $_SESSION['setor'];
     }
 
     public static function RetonarCriptografado($palavra)
