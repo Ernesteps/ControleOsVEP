@@ -34,7 +34,7 @@ class UsuarioDAO extends Conexao
         $comando_sql = 'select 
                             usu.id_usuario, 
                             usu.tipo_usuario, 
-                            usu.senha_usuario
+                            usu.senha_usuario,
                             fun.id_setor
                         from tb_usuario as usu
                     left join tb_funcionario as fun

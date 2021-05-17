@@ -9,7 +9,7 @@ class UsuarioCTRL
 {
     public function ValidarLogin($cpf, $senha)
     {
-        if (trim($$senha) == '' || trim($cpf) == '') {
+        if (trim($senha) == '' || trim($cpf) == '') {
             return 0;
         }
 
@@ -26,11 +26,7 @@ class UsuarioCTRL
         //Verificar se a senha bate
         if (password_verify($senha, $senha_hash)) {
             $tipo = $user[0]['tipo_usuario'];
-            UtilCTRL::CriarSessao(
-                                $user[0]['id_usuario'], 
-                                $user[0]['tipo_usuario'], 
-                                $user[0]['id_setor']
-                                );
+            UtilCTRL::CriarSessao($user[0]['id_usuario'], $user[0]['tipo_usuario'], $user[0]['id_setor']);
 
             switch($tipo){
                 case 1:
@@ -91,7 +87,7 @@ class UsuarioCTRL
 
         $vo->setdtCad(UtilCTRL::DataAtual());
         $vo->setStatus(1);
-        $vo->setSenha(UtilCTRL::RetonarCriptografado($vo->getCPF()));
+        $vo->setSenha(UtilCTRL::RetornarCriptografado($vo->getCPF()));
 
         $dao = new UsuarioDAO();
         return $dao->InserirUsuarioDAO($vo, UtilCTRL::CodigoUserLogado());
@@ -104,7 +100,7 @@ class UsuarioCTRL
 
         $vof->setDtCad(UtilCTRL::DataAtual());
         $vof->setStatus(1);
-        $vof->setSenha(UtilCTRL::RetonarCriptografado($vof->getCPF()));
+        $vof->setSenha(UtilCTRL::RetornarCriptografado($vof->getCPF()));
 
         $dao = new UsuarioDAO();
         return $dao->InserirUserFunc($vof, UtilCTRL::CodigoUserLogado());
@@ -120,7 +116,7 @@ class UsuarioCTRL
 
         $vot->setDtCad(UtilCTRL::DataAtual());
         $vot->setStatus(1);
-        $vot->setSenha(UtilCTRL::RetonarCriptografado($vot->getCPF()));
+        $vot->setSenha(UtilCTRL::RetornarCriptografado($vot->getCPF()));
 
         $dao = new UsuarioDAO();
         return $dao->InserirUserTec($vot, UtilCTRL::CodigoUserLogado());

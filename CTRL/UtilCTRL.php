@@ -5,6 +5,7 @@ class UtilCTRL
     private static function IniciarSessao()
     {
         if (!isset($_SESSION)) {
+            //Sessão dura em torno de 3 minutos.
             session_start();
         }
     }
@@ -73,7 +74,7 @@ class UtilCTRL
         return $_SESSION['setor'];
     }
 
-    public static function RetonarCriptografado($palavra)
+    public static function RetornarCriptografado($palavra)
     {
         return password_hash($palavra, PASSWORD_DEFAULT);
     }
