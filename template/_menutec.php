@@ -62,7 +62,7 @@
           </a>
         </li>
 
-        <li class="nav-item">
+        <!--<li class="nav-item">
           <a href="../../acesso/adm/adm_setor.php" class="nav-link">
             <i class="nav-icon far"></i>
             <p>
@@ -78,7 +78,7 @@
               Alterar para Funcionário
             </p>
           </a>
-        </li>
+        </li>-->
 
       </ul>
     </nav>

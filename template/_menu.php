@@ -120,7 +120,7 @@
           </a>
         </li>
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a href="../../acesso/funcionario/func_meuschamados.php" class="nav-link">
             <i class="nav-icon far"></i>
             <p>
@@ -136,7 +136,7 @@
               Alterar para Técnico
             </p>
           </a>
-        </li>
+        </li> -->
 
       </ul>
     </nav>
