@@ -62,12 +62,24 @@ class UsuarioCTRL
 
     public function AlterarUserFun(FuncionarioVO $vof)
     {
-        if ($vof->getNome() == '' || $vof->getCPF() == '' || $vof->getEmail_fun() == '' || $vof->getTel_fun() == '' || $vof->getIdSetor() == '') {
+        if ($vof->getNome() == '' || $vof->getCPF() == '' || $vof->getEmail_fun() == '' || $vof->getEndereco_fun() == '' || $vof->getTel_fun() == '' || $vof->getIdSetor() == '') {
             return 0;
         }
 
         $dao = new UsuarioDAO();
         return $dao->AlterarUserFun($vof);
+    }
+
+    public function AlterarUserFunSolo(FuncionarioVO $vofS)
+    {
+        if ($vofS->getEndereco_fun() == '' ||$vofS->getEmail_fun() == '' || $vofS->getTel_fun() == '') {
+            return 0;
+        }
+        
+        $vofS->setIdUser(UtilCTRL::CodigoUserLogado());
+
+        $dao = new UsuarioDAO();
+        return $dao->AlterarUserFunSolo($vofS);
     }
 
     public function AlterarUserTec(TecnicoVO $vot)
@@ -146,9 +158,9 @@ class UsuarioCTRL
         return $dao->ExcluirUsuarioDAO($idUser, $idTipo, UtilCTRL::CodigoUserLogado());
     }
 
-    public function DetalharUsuarioCTRL($idUser)
+    public function DetalharUsuarioCTRL()
     {
         $dao = new UsuarioDAO();
-        return $dao->DetalharUsuario($idUser);
+        return $dao->DetalharUsuario(UtilCTRL::CodigoUserLogado());
     }
 }

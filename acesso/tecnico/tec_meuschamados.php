@@ -1,3 +1,5 @@
+
+
 <!-- http://localhost/controleosvep/ -->
 <!DOCTYPE html>
 <html>
@@ -16,7 +18,7 @@
     <!-- Navbar -->
     <?php
     include_once '../../template/_topo.php';
-    include_once '../../template/_menutec.php';
+    include_once '../../template/_menu.php';
     ?>
     <!-- Navbar -->
 

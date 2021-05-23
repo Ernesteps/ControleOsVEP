@@ -42,7 +42,7 @@ class UsuarioDAO extends Conexao
                     where usu.cpf_usuario = ? and usu.status_usuario = ?';
         $this->sql = $this->conexao->prepare($comando_sql);
 
-        $i=1;
+        $i = 1;
         $this->sql->bindValue($i++, $cpf);
         $this->sql->bindValue($i++, 1);
         $this->sql->setFetchMode(PDO::FETCH_ASSOC);
@@ -63,7 +63,7 @@ class UsuarioDAO extends Conexao
         $i = 1;
         $this->sql->bindValue($i++, $vo->getNome());
         $this->sql->bindValue($i++, $vo->getCPF());
-        $this->sql->bindValue($i++, $vo->getIdUser());
+        $this->sql->bindValue($i++, $_SESSION['cod']);
 
         try {
             $this->sql->execute();
@@ -84,9 +84,7 @@ class UsuarioDAO extends Conexao
 
         $this->sql = $this->conexao->prepare($comando_sql);
         $i = 1;
-        $this->sql->bindValue($i++, $vo->getNome());
-        $this->sql->bindValue($i++, $vo->getCPF());
-        $this->sql->bindValue($i++, $vo->getIdUser());
+        $this->sql->bindValue($i++, $_SESSION['cod']);
 
         $this->conexao->beginTransaction();
 
@@ -96,8 +94,7 @@ class UsuarioDAO extends Conexao
             $comando_sql = 'update tb_funcionario
                                 set email_fun = ?,
                                     tel_fun = ?,
-                                    endereco_fun = ?,
-                                    id_setor = ?
+                                    endereco_fun = ?
                                 where id_usuario_fun = ?';
 
             $this->sql = $this->conexao->prepare($comando_sql);
@@ -106,13 +103,39 @@ class UsuarioDAO extends Conexao
             $this->sql->bindValue($i++, $vo->getEmail_fun());
             $this->sql->bindValue($i++, $vo->getTel_fun());
             $this->sql->bindValue($i++, $vo->getEndereco_fun());
-            $this->sql->bindValue($i++, $vo->getIdSetor());
-            $this->sql->bindValue($i++, $vo->getIdUser());
+            $this->sql->bindValue($i++, $_SESSION['cod']);
 
             $this->sql->execute();
             $this->conexao->commit();
 
             return 1;
+        } catch (Exception $ex) {
+            $this->conexao->rollBack();
+            parent::GravarErro($ex->getMessage(), $_SESSION['cod'], AlterarFunc);
+            return -1;
+        }
+    }
+
+    public function AlterarUserFunSolo(FuncionarioVO $vo)
+    {
+        $comando_sql = 'update tb_funcionario
+                                set email_fun = ?,
+                                    tel_fun = ?,
+                                    endereco_fun = ?
+                                where id_usuario_fun = ?';
+
+        $this->sql = $this->conexao->prepare($comando_sql);
+
+        $i = 1;
+        $this->sql->bindValue($i++, $vo->getEmail_fun());
+        $this->sql->bindValue($i++, $vo->getTel_fun());
+        $this->sql->bindValue($i++, $vo->getEndereco_fun());
+        $this->sql->bindValue($i++, $vo->getIdUser());
+
+        try {
+            $this->sql->execute();
+            return 1;
+            
         } catch (Exception $ex) {
             $this->conexao->rollBack();
             parent::GravarErro($ex->getMessage(), $vo->getIdUser(), AlterarFunc);
