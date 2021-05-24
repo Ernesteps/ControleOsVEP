@@ -1,21 +1,24 @@
 <?php
 
-require_once '../../CTRL/Tec_MeusdadosCTRL.php';
+require_once '../../CTRL/UsuarioCTRL.php';
 require_once '../../VO/TecnicoVO.php';
+require_once '../../CTRL/UtilCTRL.php';
+
+$ctrl = new UsuarioCTRL();
 
 //isset (Se existe) $_POST é vetorial []
 if (isset($_POST['btn_gravar'])) {
 
     $vo = new TecnicoVO();
-    $ctrl = new Tec_MeusdadosCTRL();
 
-    $vo->setNome($_POST['nome']);
-    $vo->setEmail_tec($_POST['email']);
-    $vo->setTel_tec($_POST['telefone']);
     $vo->setEndereco_tec($_POST['endereco']);
+    $vo->setTel_tec($_POST['telefone']);
+    $vo->setEmail_tec($_POST['email']);
 
-    $ret = $ctrl->InserirTec_MeusdadosCTRL($vo);
+    $ret = $ctrl->AlterarUserTecSolo($vo);
 }
+
+$dados = $ctrl->DetalharUsuarioCTRL();
 
 ?>
 
@@ -36,7 +39,7 @@ if (isset($_POST['btn_gravar'])) {
         <!-- Navbar -->
         <?php
         include_once '../../template/_topo.php';
-        include_once '../../template/_menutec.php';
+        include_once '../../template/_menu.php';
         ?>
         <!-- Navbar -->
 
@@ -74,25 +77,30 @@ if (isset($_POST['btn_gravar'])) {
 
                             <div class="form-group">
                                 <label>Nome</label>
-                                <input name="nome" id="nome" class="form-control" placeholder="Digite aqui...">
+                                <input name="nome" id="nome" readonly class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['nome_usuario'] ?>">
+                            </div>
+
+                            <div class="form-group">
+                                <label>CPF</label>
+                                <input name="cpf" id="cpf" readonly class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['cpf_usuario'] ?>">
                             </div>
 
                             <div class="form-group">
                                 <label>E-mail</label>
-                                <input name="email" id="email" class="form-control" placeholder="Digite aqui...">
+                                <input name="email" id="email" class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['email_tec'] ?>">
                             </div>
 
                             <div class="form-group">
                                 <label>Telefone</label>
-                                <input name="telefone" id="telefone" class="form-control" placeholder="Digite aqui...">
+                                <input name="telefone" id="telefone" class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['tel_tec'] ?>">
                             </div>
 
                             <div class="form-group">
                                 <label>Endereço</label>
-                                <input name="endereco" id="endereco" class="form-control" placeholder="Digite aqui...">
+                                <input name="endereco" id="endereco" class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['endereco_tec'] ?>">
                             </div>
 
-                            <button class="btn btn-success" name="btn_gravar" onclick="return ValidarTela(11)"> Gravar </button>
+                            <button class="btn btn-success" name="btn_gravar" onclick="return ValidarTela(11)"> Alterar </button>
 
                         </form>
 

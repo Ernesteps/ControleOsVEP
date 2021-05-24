@@ -34,7 +34,7 @@ if (isset($_POST['btn_gravar'])) {
     <!-- Navbar -->
     <?php
     include_once '../../template/_topo.php';
-    include_once '../../template/_menufunc.php';
+    include_once '../../template/_menu.php';
     ?>
     <!-- Navbar -->
 

@@ -28,7 +28,7 @@ class UsuarioCTRL
             $tipo = $user[0]['tipo_usuario'];
             UtilCTRL::CriarSessao($user[0]['id_usuario'], $user[0]['tipo_usuario'], $user[0]['id_setor']);
 
-            switch($tipo){
+            switch ($tipo) {
                 case 1:
                     header('location: http://localhost/ControleosVEP/acesso/adm/adm_usuario.php');
                     exit;
@@ -39,8 +39,8 @@ class UsuarioCTRL
                     exit;
                     break;
 
-                 case 3:
-                    header('location: http://localhost/ControleosVEP/acesso/tecnico/tec_meuschamados.php');
+                case 3:
+                    header('location: http://localhost/ControleosVEP/acesso/tecnico/tec_meusdados.php');
                     exit;
                     break;
             }
@@ -62,12 +62,24 @@ class UsuarioCTRL
 
     public function AlterarUserFun(FuncionarioVO $vof)
     {
-        if ($vof->getNome() == '' || $vof->getCPF() == '' || $vof->getEmail_fun() == '' || $vof->getTel_fun() == '' || $vof->getIdSetor() == '') {
+        if ($vof->getNome() == '' || $vof->getCPF() == '' || $vof->getEmail_fun() == '' || $vof->getEndereco_fun() == '' || $vof->getTel_fun() == '' || $vof->getIdSetor() == '') {
             return 0;
         }
 
         $dao = new UsuarioDAO();
         return $dao->AlterarUserFun($vof);
+    }
+
+    public function AlterarUserFunSolo(FuncionarioVO $vofS)
+    {
+        if ($vofS->getEndereco_fun() == '' || $vofS->getEmail_fun() == '' || $vofS->getTel_fun() == '') {
+            return 0;
+        }
+
+        $vofS->setIdUser(UtilCTRL::CodigoUserLogado());
+
+        $dao = new UsuarioDAO();
+        return $dao->AlterarUserFunSolo($vofS);
     }
 
     public function AlterarUserTec(TecnicoVO $vot)
@@ -77,6 +89,18 @@ class UsuarioCTRL
         }
         $dao = new UsuarioDAO();
         return $dao->AlterarUserTec($vot);
+    }
+
+    public function AlterarUserTecSolo(TecnicoVO $votS)
+    {
+        if ($votS->getEndereco_tec() == '' || $votS->getEmail_tec() == '' || $votS->getTel_tec() == '') {
+            return 0;
+        }
+
+        $votS->setIdUser(UtilCTRL::CodigoUserLogado());
+
+        $dao = new UsuarioDAO();
+        return $dao->AlterarUserTecSolo($votS);
     }
 
     public function InserirUsuarioCTRL(UsuarioVO $vo)
@@ -146,9 +170,9 @@ class UsuarioCTRL
         return $dao->ExcluirUsuarioDAO($idUser, $idTipo, UtilCTRL::CodigoUserLogado());
     }
 
-    public function DetalharUsuarioCTRL($idUser)
+    public function DetalharUsuarioCTRL()
     {
         $dao = new UsuarioDAO();
-        return $dao->DetalharUsuario($idUser);
+        return $dao->DetalharUsuario(UtilCTRL::CodigoUserLogado());
     }
 }

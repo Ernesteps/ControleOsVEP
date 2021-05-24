@@ -1,44 +1,23 @@
 <?php
 
 require_once '../../CTRL/UsuarioCTRL.php';
-require_once '../../VO/UsuarioVO.php';
 require_once '../../VO/FuncionarioVO.php';
 require_once '../../CTRL/UtilCTRL.php';
-require_once '../../CTRL/SetorCTRL.php';
 
-require_once '../../CTRL/Func_MeusdadosCTRL.php';
-
-//isset (Se existe) $_POST é vetorial []
-
-if (isset($_GET['cod']) && is_numeric($_GET['cod'])) {
-    $ctrl = new UsuarioCTRL();
-    $dados = $ctrl->DetalharUsuarioCTRL(19);
-}
+$ctrl = new UsuarioCTRL();
 
 if (isset($_POST['btn_gravar'])) {
 
     $vo = new FuncionarioVO();
-    $ctrl = new UsuarioCTRL();
 
-    //   $vo->setNome($_POST['nome']);
-    //   $vo->setEmail_fun($_POST['email']);
-    //   $vo->setTel_fun($_POST['telefone']);
-    //   $vo->setEndereco_fun($_POST['endereco']);
-
-    //   $ret = $ctrl->InserirFunc_MeusdadosCTRL($vo);
-
-    $vo->setIdUser($_POST['cod']);
-    $vo->setNome($_POST['nome']);
-    $vo->setCPF(($_POST['cpf']));
     $vo->setEndereco_fun($_POST['endereco']);
     $vo->setTel_fun($_POST['telefone']);
     $vo->setEmail_fun($_POST['email']);
-    $vo->setIdSetor($_POST['setor']);
 
-    $ret = $ctrl->AlterarUserFun($vo);
+    $ret = $ctrl->AlterarUserFunSolo($vo);
 }
-$ctrl_setor = new SetorCTRL();
-$setores = $ctrl_setor->ConsultarSetorCTRL();
+
+$dados = $ctrl->DetalharUsuarioCTRL();
 
 ?>
 
@@ -59,7 +38,7 @@ $setores = $ctrl_setor->ConsultarSetorCTRL();
         <!-- Navbar -->
         <?php
         include_once '../../template/_topo.php';
-        include_once '../../template/_menufunc.php';
+        include_once '../../template/_menu.php';
         ?>
         <!-- Navbar -->
 
@@ -103,16 +82,6 @@ $setores = $ctrl_setor->ConsultarSetorCTRL();
                             <div class="form-group">
                                 <label>CPF</label>
                                 <input name="cpf" id="cpf" readonly class="form-control" placeholder="Digite aqui..." value="<?= $dados[0]['cpf_usuario'] ?>">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Setor</label>
-                                <select name="setor" id="setor" class="form-control">
-                                    <option value="">Selecione</option>
-                                    <?php foreach ($setores as $item) { ?>
-                                        <option value="<?= $item['id_setor'] ?>" <?= $item['id_setor'] == $dados[0]['id_setor'] ? 'selected' : '' ?>><?= $item['nome_setor'] ?></option>
-                                    <?php } ?>
-                                </select>
                             </div>
 
                             <div class="form-group">

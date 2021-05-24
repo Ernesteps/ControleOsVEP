@@ -23,7 +23,7 @@ if (isset($ret)) {
             break;
         
         case 2:
-            echo "<script>toastr.success(RetornarMsg(2))</script>";
+            echo "<script>toastr.warning(RetornarMsg(2))</script>";
             break;
     }
 }

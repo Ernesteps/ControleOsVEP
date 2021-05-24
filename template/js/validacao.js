@@ -75,8 +75,7 @@ function ValidarTela(tela) {
             break;
 
         case 8: // Tela de Meus Dados (Funcionário)
-            if ($("#nome").val().trim() == '' || $("#email").val().trim() == ''
-                || $("#telefone").val().trim() == '' || $("#endereco").val().trim() == '') {
+            if ($("#email").val().trim() == ''|| $("#telefone").val().trim() == '' || $("#endereco").val().trim() == '') {
                 toastr.warning(RetornarMsg(0));
                 ret = false;
             }
@@ -99,8 +98,7 @@ function ValidarTela(tela) {
             break;
 
         case 11: // Tela de Meus Dados (Técnico)
-            if ($("#nome").val().trim() == '' || $("#email").val().trim() == ''
-                || $("#telefone").val().trim() == '' || $("#endereco").val().trim() == '') {
+            if ($("#email").val().trim() == '' || $("#telefone").val().trim() == '' || $("#endereco").val().trim() == '') {
                 toastr.warning(RetornarMsg(0));
                 ret = false;
             }
