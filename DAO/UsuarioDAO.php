@@ -14,6 +14,8 @@ define('InserirFunc', 'InserirUserFuncDAO');
 define('AlterarFunc', 'AlterarUserFuncDAO');
 define('ExcluirFunc', 'ExcluirUserFuncDAO');
 
+define('AlterarSenha', 'AlterarSenhaDAO');
+
 class UsuarioDAO extends Conexao
 {
 
@@ -483,6 +485,27 @@ class UsuarioDAO extends Conexao
                 parent::GravarErro($ex->getMessage(), $UtilIdUser, Excluir);
                 return -2;
             }
+        }
+    }
+
+    public function AlterarSenhaDAO(UsuarioVO $vo, $idUser)
+    {
+        $comando_sql = 'update tb_usuario
+                            set senha_usuario = ?
+                        where id_usuario = ?';
+
+        $this->sql = $this->conexao->prepare($comando_sql);
+
+        $i=1;
+        $this->sql->bindValue($i++, $vo->getSenha());
+        $this->sql->bindValue($i++, $vo->getIdUser());
+
+        try {
+            $this->sql->execute();
+            return 1;
+        } catch (Exception $ex){
+            parent::GravarErro($ex->getMessage(), $idUser, AlterarSenha);
+            return -1;
         }
     }
 }

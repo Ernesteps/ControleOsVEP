@@ -64,6 +64,30 @@ function ValidarCPFCadastro(cpf) {
     }
 }
 
+function ValidarSenha(senha_atual, cpf){
+
+    if (senha_atual.trim() != ""){
+
+        $.post('../adm/ajax/validar_senha.php',
+        { 
+            senha_atual_user: senha_atual,
+            cpf_user: cpf
+        },
+        function (retorno) {
+            if (retorno != 1){
+                $("#senha_atual").val('');
+                toastr.info('A senha digitada não coincide com o usuário logado.');
+            } else {
+                $("#val_senha_atual").hide();
+                $("#divSenhaAtual").hide();
+                $("#btn_verificar").hide();
+                $("#SenhaPreenchida").show();
+                toastr.info('Senha verificada.');
+            }
+        });
+    }
+}
+
 function ValidarEmailCadastro(email) {
     if (email.trim() != '') {
         $.post('ajax/verificar_email_duplicado.php',

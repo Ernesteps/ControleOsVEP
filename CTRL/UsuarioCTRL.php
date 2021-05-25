@@ -50,6 +50,27 @@ class UsuarioCTRL
         }
     }
 
+    public function ValidarSenhaFuncionario($cpf, $senha)
+    {
+        $dao = new UsuarioDAO();
+        $user = $dao->ValidarLogin($cpf);
+
+        //Verifica se encontrou o user
+        if (count($user) == 0) {
+            return 2;
+        }
+
+        $senha_hash = $user[0]['senha_usuario'];
+
+        //Verificar se a senha bate
+        if (password_verify($senha, $senha_hash)) {
+            echo 'senha bate';
+        } else {
+
+            echo 'nope';
+        }
+    }
+
     public function AlterarUserAdm(UsuarioVO $vo)
     {
         if ($vo->getNome() == '' || $vo->getCPF() == '') {
@@ -174,5 +195,13 @@ class UsuarioCTRL
     {
         $dao = new UsuarioDAO();
         return $dao->DetalharUsuario(UtilCTRL::CodigoUserLogado());
+    }
+
+    public function AlterarSenhaCTRL(UsuarioVO $vo)
+    {
+        $vo->setSenha(UtilCTRL::RetornarCriptografado($vo->getSenha()));
+
+        $dao = new UsuarioDAO();
+        return $dao->AlterarSenhaDAO($vo, UtilCTRL::CodigoUserLogado());
     }
 }

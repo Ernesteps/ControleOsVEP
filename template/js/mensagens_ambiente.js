@@ -21,6 +21,10 @@ function RetornarMsg(num) {
         case 2:
             msg = 'Usuário não encontrado!'
             break;
+
+        case 3:
+            msg = 'Erro de digito de senha!'
+            break;
     }
 
     return msg;

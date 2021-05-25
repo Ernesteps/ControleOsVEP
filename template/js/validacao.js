@@ -132,6 +132,13 @@ function ValidarTela(tela) {
                 ret = false;
             }
             break;
+
+        case 16: //Alteração de senha
+            if($("#senha_nova").val().trim() == '' || $("#repitir_senha_nova").val().trim() == ''){
+                toastr.warning(RetornarMsg(0));
+                ret = false;
+            }
+            break;
         }
 
     return ret;
