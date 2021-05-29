@@ -58,7 +58,7 @@ function ValidarTela(tela) {
             }
 
             if ($("#tipo").val().trim() == '2') {
-                
+
                 if ($("#setor").val().trim() == '') {
                     toastr.warning(RetornarMsg(0));
                     return false;
@@ -75,7 +75,7 @@ function ValidarTela(tela) {
             break;
 
         case 8: // Tela de Meus Dados (Funcionário)
-            if ($("#email").val().trim() == ''|| $("#telefone").val().trim() == '' || $("#endereco").val().trim() == '') {
+            if ($("#email").val().trim() == '' || $("#telefone").val().trim() == '' || $("#endereco").val().trim() == '') {
                 toastr.warning(RetornarMsg(0));
                 ret = false;
             }
@@ -127,12 +127,47 @@ function ValidarTela(tela) {
             break;
 
         case 15: //Tela de Acesso
-            if($("#cpf").val().trim() == '' || $("#pass").val().trim() == ''){
+            if ($("#cpf").val().trim() == '' || $("#pass").val().trim() == '') {
                 toastr.warning(RetornarMsg(0));
                 ret = false;
             }
             break;
-        }
+
+        case 16: //Alteração de senha_atual
+            if ($("#senha_nova").val().trim().length < 6) {
+                toastr.warning(RetornarMsg(6));
+                ret = false;
+            }
+            else if ($("#senha_nova").val().trim() != $("#repetir_senha_nova").val().trim()) {
+                toastr.warning(RetornarMsg(7));
+                ret = false;
+            }
+            break;
+
+        case 17: //Alteração de senha
+            if ($("#senha_nova").val().trim() == '' || $("#repetir_senha_nova").val().trim() == '') {
+                toastr.warning(RetornarMsg(0));
+                ret = false;
+            }
+            break;
+
+        case 18: //Mensagem Erro de Senha
+            toastr.info(RetornarMsg(4));
+            ret = false;
+            break;
+
+        case 19: //Mensagem Senha Verificada
+            toastr.info(RetornarMsg(5));
+            ret = false;
+            break;
+
+        case 20: //Mensagem Senha Verificada
+            if ($("#senha_atual").val().trim() == '') {
+                toastr.warning(RetornarMsg(0));
+                ret = false;
+            }
+            break;     
+    }
 
     return ret;
 }

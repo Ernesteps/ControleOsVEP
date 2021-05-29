@@ -64,6 +64,30 @@ function ValidarCPFCadastro(cpf) {
     }
 }
 
+function ValidarSenhaAtual(senha_atual_digitado){
+
+    if (ValidarTela(20)){
+
+        $.post('../adm/ajax/validar_senha_atual.php',
+        { 
+            senha_atual: senha_atual_digitado,
+        },
+        function (retorno) {
+            if (retorno != 1){
+                $("#senha_atual").val('');
+                ValidarTela(18);
+            } else {
+                $("#val_senha_atual").hide();
+                $("#divSenhaAtual").hide();
+                $("#btn_verificar").hide();
+                $("#SenhaPreenchida").show();
+                ValidarTela(19);
+            }
+        });
+    }
+    return false;
+}
+
 function ValidarEmailCadastro(email) {
     if (email.trim() != '') {
         $.post('ajax/verificar_email_duplicado.php',

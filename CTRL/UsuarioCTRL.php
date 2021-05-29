@@ -50,6 +50,27 @@ class UsuarioCTRL
         }
     }
 
+    public function ValidarSenhaFuncionario($cpf, $senha)
+    {
+        $dao = new UsuarioDAO();
+        $user = $dao->ValidarLogin($cpf);
+
+        //Verifica se encontrou o user
+        if (count($user) == 0) {
+            return 2;
+        }
+
+        $senha_hash = $user[0]['senha_usuario'];
+
+        //Verificar se a senha bate
+        if (password_verify($senha, $senha_hash)) {
+            echo 'senha bate';
+        } else {
+
+            echo 'nope';
+        }
+    }
+
     public function AlterarUserAdm(UsuarioVO $vo)
     {
         if ($vo->getNome() == '' || $vo->getCPF() == '') {
@@ -130,6 +151,16 @@ class UsuarioCTRL
         return $dao->InserirUserFunc($vof, UtilCTRL::CodigoUserLogado());
     }
 
+    public function ValidarSenhaAtual($senha_atual)
+    {
+        $dao = new UsuarioDAO();
+
+        $user_senha_hash = $dao->RecuperarSenhaAtual(UtilCTRL::CodigoUserLogado());
+        $senha_hash = $user_senha_hash[0]['senha_usuario'];
+
+        return password_verify($senha_atual, $senha_hash); //password_verify é booleano
+    }
+
     public function InserirTecnicoCTRL(TecnicoVO $vot)
     {
         //UtilCTRL::ExibirArray($vot); //Isso mostra todas as informações que está passando em um array, ou seja, no objeto.
@@ -170,9 +201,26 @@ class UsuarioCTRL
         return $dao->ExcluirUsuarioDAO($idUser, $idTipo, UtilCTRL::CodigoUserLogado());
     }
 
-    public function DetalharUsuarioCTRL()
+    public function DetalharUsuarioCTRL($idUser)
     {
         $dao = new UsuarioDAO();
-        return $dao->DetalharUsuario(UtilCTRL::CodigoUserLogado());
+        return $dao->DetalharUsuario($idUser == '' ? UtilCTRL::CodigoUserLogado() : $idUser);
+    }
+
+    public function AlterarSenhaCTRL($senha, $rsenha)
+    {
+        if(trim($senha) == '' || trim($rsenha) == ''){
+            return 0;
+        }
+        if(strlen(trim($senha)) < 6){
+            return 6;
+        }
+
+        if(trim($senha) != trim($rsenha)){
+            return 7;
+        }
+
+        $dao = new UsuarioDAO();
+        return $dao->AlterarSenhaDAO(UtilCTRL::CodigoUserLogado(), UtilCTRL::RetornarCriptografado($senha));
     }
 }

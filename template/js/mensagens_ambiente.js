@@ -21,6 +21,27 @@ function RetornarMsg(num) {
         case 2:
             msg = 'Usuário não encontrado!'
             break;
+
+        case 3:
+            msg = 'Erro de digito de senha!'
+            break;
+
+        case 4:
+            msg = 'A senha digitada não coincide com o usuário logado.'
+            break;
+
+        case 5:
+            msg = 'Senha verificada.'
+            break;
+
+        case 6:
+            msg = 'Senha deverá ter no minimo 6 caracteres.'
+            break;
+
+        case 7:
+            msg = 'Senha e Repetir Senha não conferem.'
+            break;
+
     }
 
     return msg;

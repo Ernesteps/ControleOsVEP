@@ -17,7 +17,7 @@ if (isset($_POST['btn_gravar'])) {
     $ret = $ctrl->AlterarUserFunSolo($vo);
 }
 
-$dados = $ctrl->DetalharUsuarioCTRL();
+$dados = $ctrl->DetalharUsuarioCTRL('');
 
 ?>
 

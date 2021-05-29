@@ -1,19 +1,14 @@
 <?php
+require_once '../../CTRL/UsuarioCTRL.php';
+require_once '../../CTRL/UtilCTRL.php';
 
-require_once '../../CTRL/Func_MudarsenhaCTRL.php';
-require_once '../../VO/FuncionarioVO.php';
+$ctrl = new UsuarioCTRL();
 
-//isset (Se existe) $_POST é vetorial []
-if (isset($_POST['btn_gravar'])) {
-
-    $vo = new FuncionarioVO();
-    $ctrl = new Func_MudarsenhaCTRL();
-
-    $vo->setSenha($_POST['senha_nova']);
-
-    $ret = $ctrl->InserirFunc_MudarsenhaCTRL($vo);
+if (isset($_POST['btn_alterar'])) {
+    $ret = $ctrl->AlterarSenhaCTRL($_POST['senha_nova'], $_POST['repetir_senha_nova']);
 }
 
+$dados = $ctrl->DetalharUsuarioCTRL('');
 ?>
 
 <!DOCTYPE html>
@@ -69,22 +64,26 @@ if (isset($_POST['btn_gravar'])) {
 
                         <form method="post" action="func_mudarsenha.php">
 
-                            <div class="form-group">
+                            <div class="form-group" id="divSenhaAtual" name="divSenhaAtual">
                                 <label>Digite sua senha atual</label>
-                                <input type="password" name="senha_atual" id="senha_atual"class="form-control" placeholder="Digite aqui...">
+                                <input type="password" name="senha_atual" id="senha_atual" class="form-control" placeholder="Digite aqui...">
                             </div>
 
-                            <div class="form-group">
-                                <label>Digite uma nova senha</label>
-                                <input type="password" name="senha_nova" id="senha_nova" class="form-control" placeholder="Digite aqui...">
-                            </div>
+                            <input type='button' class="btn btn-secondary" name="btn_verificar" id="btn_verificar" onclick="ValidarSenhaAtual(document.getElementById('senha_atual').value)" value="Verificar"></input>
 
-                            <div class="form-group">
-                                <label>Repita sua nova senha</label>
-                                <input type="password" name="repitir_senha_nova" id="repitir_senha_nova" class="form-control" placeholder="Digite aqui...">
-                            </div>
+                            <div id="SenhaPreenchida" name="SenhaPreenchida" style="display: none;">
+                                <div class="form-group">
+                                    <label>Digite uma nova senha</label>
+                                    <input type="password" name="senha_nova" id="senha_nova" class="form-control" placeholder="Digite aqui...">
+                                </div>
 
-                            <button class="btn btn-success" name="btn_gravar" onclick="return ValidarTela(9)"> Gravar </button>
+                                <div class="form-group">
+                                    <label>Repita sua nova senha</label>
+                                    <input type="password" name="repetir_senha_nova" id="repetir_senha_nova" class="form-control" placeholder="Digite aqui...">
+                                </div>
+
+                                <button type='submit' class="btn btn-success" name="btn_alterar" id="btn_alterar" onclick="return ValidarTela(16)"> Alterar </button>
+                            </div>
 
                         </form>
 

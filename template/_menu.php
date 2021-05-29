@@ -122,9 +122,8 @@ if (isset($_GET['close']) && $_GET['close'] == '1') {
             </ul>
           </li>
 
-        <?php } ?>
+        <?php } else if ($tipo == 2) { ?>
 
-        <?php if ($tipo == 2) { ?>
           <li class="nav-item">
             <a href="func_novochamado.php" class="nav-link">
               <i class="nav-icon far fa-edit"></i>
@@ -161,9 +160,8 @@ if (isset($_GET['close']) && $_GET['close'] == '1') {
             </a>
           </li>
 
-        <?php } ?>
+        <?php } else if ($tipo == 3) { ?>
 
-        <?php if ($tipo == 3) { ?>
           <li class="nav-item">
             <a href="tec_atenderfinalizarchamado.php" class="nav-link">
               <i class="nav-icon far fa-edit"></i>
