@@ -18,7 +18,7 @@ if (isset($_POST['btn_gravar'])) {
     $ret = $ctrl->AlterarUserTecSolo($vo);
 }
 
-$dados = $ctrl->DetalharUsuarioCTRL();
+$dados = $ctrl->DetalharUsuarioCTRL('');
 
 ?>
 

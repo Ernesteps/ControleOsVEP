@@ -1,23 +1,14 @@
 <?php
-
 require_once '../../CTRL/UsuarioCTRL.php';
-require_once '../../VO/UsuarioVO.php';
 require_once '../../CTRL/UtilCTRL.php';
 
 $ctrl = new UsuarioCTRL();
-$dados = $ctrl->DetalharUsuarioCTRL();
 
 if (isset($_POST['btn_alterar'])) {
-    if ($_POST['senha_nova'] == $_POST['repitir_senha_nova']) {
-        $vo = new UsuarioVO();
-
-        $vo->setIdUser($dados[0]['id_usuario']);
-        $vo->setSenha($_POST['repitir_senha_nova']);
-        $ret = $ctrl->AlterarSenhaCTRL($vo);
-    } else {
-        $ret = 3;
-    }
+    $ret = $ctrl->AlterarSenhaCTRL($_POST['senha_nova'], $_POST['repetir_senha_nova']);
 }
+
+$dados = $ctrl->DetalharUsuarioCTRL('');
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +43,7 @@ if (isset($_POST['btn_alterar'])) {
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Técnico</a></li>
+                                <li class="breadcrumb-item"><a href="#">Funcionário</a></li>
                                 <li class="breadcrumb-item active">Mudar Senha</li>
                             </ol>
                         </div>
@@ -78,7 +69,7 @@ if (isset($_POST['btn_alterar'])) {
                                 <input type="password" name="senha_atual" id="senha_atual" class="form-control" placeholder="Digite aqui...">
                             </div>
 
-                            <input type='button' class="btn btn-secondary" name="btn_verificar" id="btn_verificar" onclick="ValidarSenha(document.getElementById('senha_atual').value, <?= $dados[0]['cpf_usuario'] ?>)" value="Verificar"></input>
+                            <input type='button' class="btn btn-secondary" name="btn_verificar" id="btn_verificar" onclick="ValidarSenhaAtual(document.getElementById('senha_atual').value)" value="Verificar"></input>
 
                             <div id="SenhaPreenchida" name="SenhaPreenchida" style="display: none;">
                                 <div class="form-group">
@@ -88,12 +79,11 @@ if (isset($_POST['btn_alterar'])) {
 
                                 <div class="form-group">
                                     <label>Repita sua nova senha</label>
-                                    <input type="password" name="repitir_senha_nova" id="repitir_senha_nova" class="form-control" placeholder="Digite aqui...">
+                                    <input type="password" name="repetir_senha_nova" id="repetir_senha_nova" class="form-control" placeholder="Digite aqui...">
                                 </div>
 
                                 <button type='submit' class="btn btn-success" name="btn_alterar" id="btn_alterar" onclick="return ValidarTela(16)"> Alterar </button>
                             </div>
-
 
                         </form>
 
