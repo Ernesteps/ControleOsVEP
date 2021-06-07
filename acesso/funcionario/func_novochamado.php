@@ -1,19 +1,27 @@
 <?php
 
 require_once '../../CTRL/Func_ChamadoCTRL.php';
+require_once '../../CTRL/UsuarioCTRL.php';
+require_once '../../CTRL/UtilCTRL.php';
+require_once '../../CTRL/ChamadoCTRL.php';
 require_once '../../VO/ChamadoVO.php';
+
+$ctrl_func = new UsuarioCTRL();
+$ctrl_equip_chamado = new ChamadoCTRL();
 
 //isset (Se existe) $_POST é vetorial []
 if (isset($_POST['btn_gravar'])) {
 
   $vo = new ChamadoVO();
-  $ctrl = new Func_ChamadoCTRL();
 
   $vo->setId_Equipamento($_POST['equipamento']);
   $vo->setDesc_problema($_POST['descricao']);
 
-  $ret = $ctrl->InserirFunc_ChamadoCTRL($vo);
+  $ret = $ctrl_equip_chamado->InserirChamadoFuncCTRL($vo);
 }
+
+$dados_func = $ctrl_func->DetalharUsuarioCTRL('');
+$dados_equip_chamado = $ctrl_equip_chamado->CarregarEquipamentosSetorCTRL($dados_func[0]['id_setor'], 1);
 
 ?>
 
@@ -74,6 +82,9 @@ if (isset($_POST['btn_gravar'])) {
                 <label>Escolha o equipamento</label>
                 <select name="equipamento" id="equipamento" class="form-control">
                   <option value="">Selecione</option>
+                  <?php for ($i = 0; $i < count($dados_equip_chamado); $i++) { ?>
+                    <option value="<?= $dados_equip_chamado[$i]['id_equipamento'] ?>" <?= $dados_equip_chamado[$i]['id_equipamento'] == $dados_equip_chamado ? 'selected' : '' ?>><?= $dados_equip_chamado[$i]['ident_equip'] . ' / ' . $dados_equip_chamado[$i]['desc_equip'] ?></option>
+                  <?php } ?>
                 </select>
               </div>
 
