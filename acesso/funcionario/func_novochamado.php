@@ -1,10 +1,10 @@
 <?php
 
-require_once '../../CTRL/Func_ChamadoCTRL.php';
 require_once '../../CTRL/UsuarioCTRL.php';
 require_once '../../CTRL/UtilCTRL.php';
 require_once '../../CTRL/ChamadoCTRL.php';
 require_once '../../VO/ChamadoVO.php';
+require_once '../../VO/AlocarEquipVO.php';
 
 $ctrl_func = new UsuarioCTRL();
 $ctrl_equip_chamado = new ChamadoCTRL();
@@ -14,14 +14,17 @@ if (isset($_POST['btn_gravar'])) {
 
   $vo = new ChamadoVO();
 
-  $vo->setId_Equipamento($_POST['equipamento']);
+  $id_equipamento = explode('-', $_POST['equipamento'])[0];
+  $id_alocar = explode('-', $_POST['equipamento'])[1];
+
+  $vo->setId_Equipamento($id_equipamento);
   $vo->setDesc_problema($_POST['descricao']);
 
-  $ret = $ctrl_equip_chamado->InserirChamadoFuncCTRL($vo);
+  $ret = $ctrl_equip_chamado->InserirChamadoFuncCTRL($vo, $id_alocar);
 }
 
 $dados_func = $ctrl_func->DetalharUsuarioCTRL('');
-$dados_equip_chamado = $ctrl_equip_chamado->CarregarEquipamentosSetorCTRL($dados_func[0]['id_setor'], 1);
+$dados_equip_chamado = $ctrl_equip_chamado->CarregarEquipamentosSetorCTRL();
 
 ?>
 
@@ -83,7 +86,7 @@ $dados_equip_chamado = $ctrl_equip_chamado->CarregarEquipamentosSetorCTRL($dados
                 <select name="equipamento" id="equipamento" class="form-control">
                   <option value="">Selecione</option>
                   <?php for ($i = 0; $i < count($dados_equip_chamado); $i++) { ?>
-                    <option value="<?= $dados_equip_chamado[$i]['id_equipamento'] ?>" <?= $dados_equip_chamado[$i]['id_equipamento'] == $dados_equip_chamado ? 'selected' : '' ?>><?= $dados_equip_chamado[$i]['ident_equip'] . ' / ' . $dados_equip_chamado[$i]['desc_equip'] ?></option>
+                    <option value="<?= $dados_equip_chamado[$i]['id_equipamento'] .'-'.$dados_equip_chamado[$i]['id_alocar_equip'] ?>">Identificação: <?= $dados_equip_chamado[$i]['ident_equip'] ?> / Descrição: <?= $dados_equip_chamado[$i]['desc_equip'] ?></option>
                   <?php } ?>
                 </select>
               </div>

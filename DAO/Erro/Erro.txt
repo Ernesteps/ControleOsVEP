@@ -38,3 +38,53 @@ Erro: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id_usuario_fun' in
 Data: 10/05/2021 Hora: 09:21
 Função Chamado: AlterarUserTecDAO
 Id Usuario Logado: 20
+****************************************************************
+Erro: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+Data: 12/06/2021 Hora: 14:41
+Função Chamado: InserirChamadoDAO
+Id Usuario Logado: 9
+****************************************************************
+Erro: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+Data: 12/06/2021 Hora: 14:42
+Função Chamado: InserirChamadoDAO
+Id Usuario Logado: 9
+****************************************************************
+Erro: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+Data: 12/06/2021 Hora: 14:43
+Função Chamado: InserirChamadoDAO
+Id Usuario Logado: 9
+****************************************************************
+Erro: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+Data: 12/06/2021 Hora: 14:43
+Função Chamado: InserirChamadoDAO
+Id Usuario Logado: 9
+****************************************************************
+Erro: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+Data: 12/06/2021 Hora: 14:43
+Função Chamado: InserirChamadoDAO
+Id Usuario Logado: 9
+****************************************************************
+Erro: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+Data: 12/06/2021 Hora: 14:43
+Função Chamado: InserirChamadoDAO
+Id Usuario Logado: 9
+****************************************************************
+Erro: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+Data: 12/06/2021 Hora: 14:44
+Função Chamado: InserirChamadoDAO
+Id Usuario Logado: 9
+****************************************************************
+Erro: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+Data: 12/06/2021 Hora: 14:45
+Função Chamado: InserirChamadoDAO
+Id Usuario Logado: 9
+****************************************************************
+Erro: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+Data: 12/06/2021 Hora: 14:45
+Função Chamado: InserirChamadoDAO
+Id Usuario Logado: 9
+****************************************************************
+Erro: SQLSTATE[HY093]: Invalid parameter number: number of bound variables does not match number of tokens
+Data: 12/06/2021 Hora: 14:46
+Função Chamado: InserirChamadoDAO
+Id Usuario Logado: 9

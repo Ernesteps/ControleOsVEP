@@ -49,8 +49,9 @@ function MostrarTipoUsuario(tipo) {
 function ValidarCPFCadastro(cpf) {
     if (cpf.trim() != '') {
         $.post('ajax/verificar_cpf_duplicado.php',
-            { cpf_user: cpf, 
-              id: $("#cod").val() != '' ? $("#cod").val() : null 
+            {
+                cpf_user: cpf,
+                id: $("#cod").val() != '' ? $("#cod").val() : null
             },
             function (retorno) {
                 if (retorno == 1) {
@@ -64,26 +65,26 @@ function ValidarCPFCadastro(cpf) {
     }
 }
 
-function ValidarSenhaAtual(senha_atual_digitado){
+function ValidarSenhaAtual(senha_atual_digitado) {
 
-    if (ValidarTela(20)){
+    if (ValidarTela(20)) {
 
         $.post('../adm/ajax/validar_senha_atual.php',
-        { 
-            senha_atual: senha_atual_digitado,
-        },
-        function (retorno) {
-            if (retorno != 1){
-                $("#senha_atual").val('');
-                ValidarTela(18);
-            } else {
-                $("#val_senha_atual").hide();
-                $("#divSenhaAtual").hide();
-                $("#btn_verificar").hide();
-                $("#SenhaPreenchida").show();
-                ValidarTela(19);
-            }
-        });
+            {
+                senha_atual: senha_atual_digitado,
+            },
+            function (retorno) {
+                if (retorno != 1) {
+                    $("#senha_atual").val('');
+                    ValidarTela(18);
+                } else {
+                    $("#val_senha_atual").hide();
+                    $("#divSenhaAtual").hide();
+                    $("#btn_verificar").hide();
+                    $("#SenhaPreenchida").show();
+                    ValidarTela(19);
+                }
+            });
     }
     return false;
 }
@@ -104,20 +105,20 @@ function ValidarEmailCadastro(email) {
     }
 }
 
-function InserirTipo(){
+function InserirTipo() {
     var nome = $("#nome").val().trim();
 
-    if(ValidarTela(5)){
+    if (ValidarTela(5)) {
         $.post("ajax/tipo_equipamento_ajax.php", {
-            nome_tipo : nome,
-            acao : 'I'
-        }, function (retorno_chamada){
+            nome_tipo: nome,
+            acao: 'I'
+        }, function (retorno_chamada) {
             $("#nome").val('')
             toastr.success(RetornarMsg(1));
 
             $.post("ajax/tipo_equipamento_ajax.php", {
-                acao : 'C'
-            }, function (retorno_chamada){
+                acao: 'C'
+            }, function (retorno_chamada) {
                 $("#tabTipos").html(retorno_chamada);
             });
         });
@@ -125,20 +126,20 @@ function InserirTipo(){
     return false;
 }
 
-function InserirModelo(){
+function InserirModelo() {
     var nome = $("#nome").val().trim();
 
-    if(ValidarTela(4)){
+    if (ValidarTela(4)) {
         $.post("ajax/modelo_ajax.php", {
-            nome_modelo : nome,
-            acao : 'I'
-        }, function (retorno_chamada){
+            nome_modelo: nome,
+            acao: 'I'
+        }, function (retorno_chamada) {
             $("#nome").val('')
             toastr.success(RetornarMsg(1));
-            
+
             $.post("ajax/modelo_ajax.php", {
-                acao : 'C'
-            }, function (retorno_chamada){
+                acao: 'C'
+            }, function (retorno_chamada) {
                 $("#tabModelos").html(retorno_chamada);
             });
         });
@@ -146,20 +147,20 @@ function InserirModelo(){
     return false;
 }
 
-function InserirSetor(){
+function InserirSetor() {
     var nome = $("#nome").val().trim();
 
-    if(ValidarTela(1)){
+    if (ValidarTela(1)) {
         $.post("ajax/Setor_ajax.php", {
-            nome_setor : nome,
+            nome_setor: nome,
             acao: 'I'
-        }, function (retorno_chamada){
+        }, function (retorno_chamada) {
             $("#nome").val('')
             toastr.success(RetornarMsg(1));
 
             $.post("ajax/Setor_ajax.php", {
-                acao : 'C'
-            }, function (retorno_chamada){
+                acao: 'C'
+            }, function (retorno_chamada) {
                 $("#tabSetores").html(retorno_chamada);
             });
         });

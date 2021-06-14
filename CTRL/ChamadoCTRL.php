@@ -5,13 +5,13 @@ require_once 'UtilCTRL.php';
 
 class ChamadoCTRL
 {
-    public function CarregarEquipamentosSetorCTRL($idSetorLogado, $sit)
+    public function CarregarEquipamentosSetorCTRL()
     {
         $dao = new ChamadoDAO();
-        return $dao->CarregarEquipamentosSetorDAO($idSetorLogado, $sit);
+        return $dao->CarregarEquipamentosSetorDAO(UtilCTRL::SetorUserLogado(), 1);
     }
 
-    public function InserirChamadoFuncCTRL(ChamadoVO $vo)
+    public function InserirChamadoFuncCTRL(ChamadoVO $vo, $idAlocar)
     {
         if ($vo->getId_Equipamento() == '' || $vo->getDesc_Problema() == '') {
             return 0;
@@ -20,7 +20,14 @@ class ChamadoCTRL
         $vo->setData_Chamado(UtilCTRL::DataAtual());
         $vo->setHora_Chamado(UtilCTRL::HoraAtual());
 
+
         $dao = new ChamadoDAO();
-        return $dao->InserirChamadoDAOFunc($vo, UtilCTRL::CodigoUserLogado());
+        return $dao->InserirChamadoDAOFunc($vo, UtilCTRL::CodigoUserLogado(), $idAlocar);
+    }
+
+    public function FiltrarChamadoSetorCTRL($FiltrarSit)
+    {
+        $dao = new ChamadoDAO();
+        return $dao->FiltrarChamadoSetorDAO($FiltrarSit);
     }
 }
