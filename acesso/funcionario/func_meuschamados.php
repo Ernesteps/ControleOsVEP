@@ -100,7 +100,6 @@ if (isset($_POST['btn_pesquisar'])) {
                             <th>Técnico</th>
                             <th>Data Encerramento</th>
                             <th>Laudo</th>
-                            <th>Ação</th>
                           </tr>
                         </thead>
 
@@ -111,13 +110,15 @@ if (isset($_POST['btn_pesquisar'])) {
                               <td><?= $filtrar_chamados[$i]['nome_funcionario'] ?></td>
                               <td><?= 'Identificação: ' . $filtrar_chamados[$i]['ident_equip'] ?> <br> <?= 'Descrição: ' . $filtrar_chamados[$i]['desc_equip'] ?></td>
                               <td><?= $filtrar_chamados[$i]['desc_problema'] ?></td>
-                              <td><?= $filtrar_chamados[$i]['data_atendimento'] ?></td>
-                              <td><?= $filtrar_chamados[$i]['nome_tecnico'] ?></td>
-                              <td><?= $filtrar_chamados[$i]['data_encerramento'] ?></td>
-                              <td><?= $filtrar_chamados[$i]['laudo_chamado'] ?></td>
-                              <td>
-                                  <a href="#" class="btn btn-warning btn-xs" name="btn_vermais" id="btn_vermais">Ver mais...</a>
-                              </td>
+                              <td id="TDdata_atendimento<?= $i ?>" style="display: none;"><?= isset($filtrar_chamados[$i]['data_atendimento']) ? $filtrar_chamados[$i]['data_atendimento'] : "Não foi Atendido." ?></td>
+                              <td id="TDnome_tecnico<?= $i ?>" style="display: none;"><?= isset($filtrar_chamados[$i]['nome_tecnico']) ? $filtrar_chamados[$i]['nome_tecnico'] : "O Técnico ainda não atendeu." ?></td>
+                              <td id="TDdata_encerramento<?= $i ?>" style="display: none;"><?= isset($filtrar_chamados[$i]['data_encerramento']) ? $filtrar_chamados[$i]['data_encerramento'] : "Não encerrado." ?></td>
+                              <td id="TDlaudo_chamado<?= $i ?>" style="display: none;"><?= isset($filtrar_chamados[$i]['laudo_chamado']) ? $filtrar_chamados[$i]['laudo_chamado'] : "Não descrito." ?></td>
+                              <?php if (isset($filtrar_chamados[$i]['data_atendimento'])) { ?>
+                                <td>
+                                  <button class="btn btn-warning btn-sm" name="btn_vermais<?= $i ?>" id="btn_vermais<?= $i ?>" value="<?= $i ?>" onclick="MostrarInformacoesChamadoFuncionario(document.getElementById('btn_vermais<?= $i ?>').value)">Ver mais...</button>
+                                </td>
+                              <?php } ?>
                             </tr>
                           <?php } ?>
                         </tbody>

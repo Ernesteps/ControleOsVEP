@@ -21,6 +21,15 @@ function CarregarDadosModeloAlterar(id, nome) {
     $("#nome_alt").val(nome); //HTML Preenche algo na tela, uma label ou descrição
 }
 
+function MostrarInformacoesChamadoFuncionario(i)
+{
+        $("#btn_vermais"+i).hide();
+        $("#TDdata_atendimento"+i).show();
+        $("#TDnome_tecnico"+i).show();
+        $("#TDdata_encerramento"+i).show();
+        $("#TDlaudo_chamado"+i).show();
+}
+
 function MostrarTipoUsuario(tipo) {
 
     if (tipo != '') {
