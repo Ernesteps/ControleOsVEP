@@ -28,6 +28,6 @@ class ChamadoCTRL
     public function FiltrarChamadoSetorCTRL($FiltrarSit)
     {
         $dao = new ChamadoDAO();
-        return $dao->FiltrarChamadoSetorDAO($FiltrarSit);
+        return $dao->FiltrarChamadoSetorDAO($FiltrarSit, UtilCTRL::SetorUserLogado());
     }
 }

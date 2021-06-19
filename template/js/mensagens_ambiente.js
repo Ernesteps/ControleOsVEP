@@ -42,6 +42,10 @@ function RetornarMsg(num) {
             msg = 'Senha e Repetir Senha não conferem.'
             break;
 
+        case 8:
+            msg = 'Não foi encontrado registro.'
+            break;
+
     }
 
     return msg;

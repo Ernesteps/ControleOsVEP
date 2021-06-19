@@ -21,6 +21,13 @@ function CarregarDadosModeloAlterar(id, nome) {
     $("#nome_alt").val(nome); //HTML Preenche algo na tela, uma label ou descrição
 }
 
+function CarregarModalDetalharAtendimento(dataAtend, dataEnc, tec, laudo) {
+    $("#data_hora_atend").val(dataAtend);
+    $("#data_hora_enc").val(dataEnc);
+    $("#tecnico").val(tec);
+    $("#laudo").val(laudo);
+}
+
 function MostrarTipoUsuario(tipo) {
 
     if (tipo != '') {

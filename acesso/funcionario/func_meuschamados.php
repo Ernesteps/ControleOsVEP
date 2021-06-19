@@ -1,13 +1,19 @@
 <?php
 
 require_once '../../CTRL/ChamadoCTRL.php';
+require_once '../../CTRL/UtilCTRL.php';
 
-$ctrl_chamado = new ChamadoCTRL();
 $FiltrarSit = '';
 
+
 if (isset($_POST['btn_pesquisar'])) {
+
+  $ctrl_chamado = new ChamadoCTRL();
   $FiltrarSit = $_POST['situacao'];
-  $filtrar_chamados = $ctrl_chamado->FiltrarChamadoSetorCTRL($FiltrarSit);
+  $chamados = $ctrl_chamado->FiltrarChamadoSetorCTRL($FiltrarSit);
+
+  if (count($chamados) == 0)
+    $ret = 8;
 }
 
 ?>
@@ -78,7 +84,7 @@ if (isset($_POST['btn_pesquisar'])) {
             </form>
             <hr>
 
-            <?php if (isset($filtrar_chamados)) { ?>
+            <?php if (isset($chamados) && count($chamados) > 0) { ?>
               <div class="row">
                 <div class="col-12">
                   <div class="card">
@@ -96,32 +102,27 @@ if (isset($_POST['btn_pesquisar'])) {
                             <th>Funcionário</th>
                             <th>Equipamento</th>
                             <th>Problema</th>
-                            <th>Data Atendimento</th>
-                            <th>Técnico</th>
-                            <th>Data Encerramento</th>
-                            <th>Laudo</th>
                             <th>Ação</th>
                           </tr>
                         </thead>
 
                         <tbody>
-                          <?php for ($i = 0; $i < count($filtrar_chamados); $i++) { ?>
+                          <?php foreach ($chamados as $item) { ?>
                             <tr>
-                              <td><?= $filtrar_chamados[$i]['data_chamado'] ?></td>
-                              <td><?= $filtrar_chamados[$i]['nome_funcionario'] ?></td>
-                              <td><?= 'Identificação: ' . $filtrar_chamados[$i]['ident_equip'] ?> <br> <?= 'Descrição: ' . $filtrar_chamados[$i]['desc_equip'] ?></td>
-                              <td><?= $filtrar_chamados[$i]['desc_problema'] ?></td>
-                              <td><?= $filtrar_chamados[$i]['data_atendimento'] ?></td>
-                              <td><?= $filtrar_chamados[$i]['nome_tecnico'] ?></td>
-                              <td><?= $filtrar_chamados[$i]['data_encerramento'] ?></td>
-                              <td><?= $filtrar_chamados[$i]['laudo_chamado'] ?></td>
+                              <td><?= UtilCTRL::DataExibir($item['data_chamado']) ?></td>
+                              <td><?= $item['nome_funcionario'] ?></td>
+                              <td><?= 'Identificação: ' . $item['ident_equip'] ?> <br> <?= 'Descrição: ' . $item['desc_equip'] ?></td>
+                              <td><?= $item['desc_problema'] ?></td>
                               <td>
-                                  <a href="#" class="btn btn-warning btn-xs" name="btn_vermais" id="btn_vermais">Ver mais...</a>
+                                <?php if ($item['data_atendimento'] != '') { ?>
+                                  <a href="#" data_toggle="modal" data-target="#modal-detalhe" class="btn btn-warning btn-sm" onclick="return CarregarModalDetalharAtendimento('<?= $item['data_atendimento'] . ' às ' . $item['hora_atendimento'] ?>', '<?= $item['data_encerramento'] . ' às ' . $item['hora_encerramento'] ?>', '<?= $item['nome_tecnico'] ?>', '<?= $item['laudo_chamado'] ?>')">Ver atendimento...</a>
+                                <?php } else { echo '<i>Aguardando Atendimento</i>'; } ?>
                               </td>
                             </tr>
                           <?php } ?>
                         </tbody>
                       </table>
+                      <?php include_once 'modal/_ver_atendimento.php'; ?>
                     </div>
                     <!-- /.card-body -->
                   </div>
@@ -141,6 +142,7 @@ if (isset($_POST['btn_pesquisar'])) {
     <?php
 
     include_once '../../template/_footer.php';
+    include_once '../../template/_msg.php';
 
     ?>
 

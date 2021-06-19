@@ -45,5 +45,9 @@ if (isset($ret)) {
         case 7:
             echo "<script>toastr.info(RetornarMsg(7))</script>";
             break;
+
+        case 8:
+            echo "<script>toastr.info(RetornarMsg(8))</script>";
+            break;
     }
 }

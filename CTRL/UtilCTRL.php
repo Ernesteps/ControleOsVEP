@@ -101,4 +101,7 @@ class UtilCTRL
         self::setarFusoHorario();
         return date('Y-m-d');
     }
+    public static function DataExibir($data){
+        return explode('-', $data)[2] . '/' . explode('-', $data)[1] . '/' . explode('-', $data)[0];
+    }
 }

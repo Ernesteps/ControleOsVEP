@@ -17,36 +17,53 @@ class ChamadoDAO extends Conexao
         $this->sql = new PDOStatement();
     }
 
-    public function FiltrarChamadoSetorDAO($FiltrarSit)
+    public function FiltrarChamadoSetorDAO($FiltrarSit, $idSetor)
     {
-        $comando_sql = 'select cha.id_chamado,
-                                    cha.data_chamado,
-                                    usufun.nome_usuario as nome_funcionario,
-                                    equip.ident_equip,
-                                    equip.desc_equip,
-                                    cha.desc_problema,
-                                    cha.data_atendimento,
-                                    usutec.nome_usuario as nome_tecnico,
-                                    cha.data_encerramento,
-                                    cha.laudo_chamado
-                                from tb_chamado as cha
-                            inner join tb_equipamento as equip
-                                on cha.id_equipamento = equip.id_equipamento
-                            inner join tb_usuario as usufun
-                                on cha.id_usuario_fun = usufun.id_usuario
-                            left join tb_usuario as usutec
-                                on cha.id_usuario_tec = usutec.id_usuario';
+        //date_format(cha.data_chamado, "%d/%m/%Y) as data_chamado //retornar já a data certa
+        $comando_sql = 'select cha.data_chamado,
+                               cha.hora_chamado,
+                               usu_func.nome_usuario as nome_funcionario,
+                               equip.ident_equip,
+                               equip.desc_equip,
+                               cha.desc_problema,
+                               cha.data_atendimento,
+                               cha.hora_atendimento,
+                               usu_tec.nome_usuario as nome_tecnico,
+                               cha.data_encerramento,
+                               cha.hora_encerramento,
+                               cha.laudo_chamado
+                            from tb_chamado as cha
+
+                        inner join tb_equipamento as equip
+                            on cha.id_equipamento = equip.id_equipamento
+
+                        inner join tb_funcionario as func
+                            on cha.id_usuario_fun = func.id_usuario_fun
+                        inner join tb_usuario as usu_func
+                            on func.id_usuario_fun = usu_func.id_usuario
+
+                        left join tb_tecnico as tecnico
+                            on cha.id_usuario_tec = tecnico.id_usuario_tec
+                        left join tb_usuario as usu_tec
+                            on tecnico.id_usuario_tec = usu_tec.id_usuario
+
+                        inner join tb_alocar_equip as alo
+                            on alo.id_equipamento = equip.id_equipamento
+                        where alo.id_setor = ?';
             
-        if ($FiltrarSit == 1) 
-            $comando_sql .= ' where data_atendimento is null and data_encerramento is null';
+        if ($FiltrarSit == 1) // Aguardando Atendimento
+            $comando_sql .= ' and cha.data_atendimento is null and alo.sit_alocar = 3';
                   
-        else if ($FiltrarSit == 2) 
-            $comando_sql .= ' where data_atendimento is not null and data_encerramento is null'; 
+        else if ($FiltrarSit == 2) //Em atendimento
+            $comando_sql .= ' and cha.data_atendimento is not null and cha.data_encerramento is null and alo.sit_alocar = 3'; 
                             
-        else if ($FiltrarSit == 3) 
-            $comando_sql .= ' where data_encerramento is not null';
+        else if ($FiltrarSit == 3) //Atendido
+            $comando_sql .= ' and cha.data_encerramento is not null and alo.sit_alocar = 1';
+
+        $comando_sql .= ' order by cha.id_chamado DESC';
         
         $this->sql = $this->conexao->prepare($comando_sql);
+        $this->sql->bindValue(1, $idSetor);
         $this->sql->setFetchMode(PDO::FETCH_ASSOC);
         $this->sql->execute();
 
