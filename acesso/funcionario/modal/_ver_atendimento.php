@@ -10,10 +10,9 @@
             <div class="modal-body">
 
                 <div class="row">
-
                     <div class="form-group col-md-6">
                         <label>Data e hora do Atendimento</label>
-                        <input disabled class="form-control" id="data_hora_atend">
+                        <input type="text" disabled class="form-control" id="data_hora_atend">
                     </div>
 
                     <div class="form-group col-md-6">
