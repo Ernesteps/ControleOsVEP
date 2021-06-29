@@ -137,7 +137,7 @@ if (isset($_GET['close']) && $_GET['close'] == '1') {
             <a href="func_meuschamados.php" class="nav-link">
               <i class="nav-icon far fa-edit"></i>
               <p>
-                Meus Chamados
+                Consultar Chamados
               </p>
             </a>
           </li>
@@ -172,10 +172,10 @@ if (isset($_GET['close']) && $_GET['close'] == '1') {
           </li>
 
           <li class="nav-item">
-            <a href="tec_meuschamados.php" class="nav-link">
+            <a href="tec_chamados.php" class="nav-link">
               <i class="nav-icon far fa-edit"></i>
               <p>
-                Consultar Chamados
+                Chamados
               </p>
             </a>
           </li>

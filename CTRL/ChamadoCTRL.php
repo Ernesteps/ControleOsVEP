@@ -30,4 +30,10 @@ class ChamadoCTRL
         $dao = new ChamadoDAO();
         return $dao->FiltrarChamadoSetorDAO($FiltrarSit, UtilCTRL::SetorUserLogado());
     }
+
+    public function FiltrarChamadosTecCTRL($FiltrarSit)
+    {
+        $dao = new ChamadoDAO();
+        return $dao->FiltrarChamadosTec($FiltrarSit);
+    }
 }

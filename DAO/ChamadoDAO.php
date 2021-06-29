@@ -70,6 +70,51 @@ class ChamadoDAO extends Conexao
         return $this->sql->fetchAll();
     }
 
+    public function FiltrarChamadosTec($FiltrarSit)
+    {
+        $comando_sql = 'select cha.id_chamado,
+                               cha.data_chamado,
+                               cha.data_atendimento,
+                               cha.data_encerramento,
+                               cha.hora_chamado,
+                               usu_func.nome_usuario as nome_funcionario,
+                               equip.ident_equip,
+                               equip.desc_equip,
+                               cha.desc_problema,
+                               se.nome_setor
+                            from tb_chamado as cha
+                            
+                        inner join tb_equipamento as equip
+                            on cha.id_equipamento = equip.id_equipamento
+                            
+                        inner join tb_funcionario as func
+                            on cha.id_usuario_fun = func.id_usuario_fun
+                        inner join tb_usuario as usu_func
+                            on func.id_usuario_fun = usu_func.id_usuario
+                        
+                        inner join tb_alocar_equip as alo
+                            on alo.id_equipamento = equip.id_equipamento
+                        inner join tb_setor as se
+                            on alo.id_setor = se.id_setor';
+
+        if ($FiltrarSit == 1)
+            $comando_sql .= ' where cha.data_atendimento is null';
+
+        if ($FiltrarSit == 2)
+            $comando_sql .= ' where cha.data_atendimento is not null and cha.data_encerramento is null';
+
+        if ($FiltrarSit == 3)
+            $comando_sql .= ' where cha.data_encerramento is not null';
+        
+        $comando_sql .= ' order by cha.id_chamado DESC';
+
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $this->sql->setFetchMode(PDO::FETCH_ASSOC);
+        $this->sql->execute();
+
+        return $this->sql->fetchAll();
+    }
+
     public function CarregarEquipamentosSetorDAO($idSetorLogado, $sit)
     {
 

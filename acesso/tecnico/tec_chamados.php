@@ -1,6 +1,22 @@
-
-
 <!-- http://localhost/controleosvep/ -->
+<?php
+
+require_once '../../CTRL/ChamadoCTRL.php';
+require_once '../../CTRL/UtilCTRL.php';
+
+$FiltrarSit = '';
+
+if(isset($_POST['btn_pesquisar'])) {
+
+  $ctrl_chamado = new ChamadoCTRL();
+  $FiltrarSit = $_POST['situacao'];
+  $chamados = $ctrl_chamado->FiltrarChamadosTecCTRL($FiltrarSit);
+
+  if(count($chamados) == 0)
+    $ret = 8;
+}
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -29,7 +45,7 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1>Filtre seus chamados</h1>
+              <h1>Filtre os chamados</h1>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
@@ -51,18 +67,22 @@
 
           </div>
           <div class="card-body">
+            <form method="post" action="tec_chamados.php">
+              <div class="form-group">
+                <label>Escolha a situação do chamado</label>
+                <select name="situacao" id="situacao" class="form-control">
+                  <option value="0" <?= $FiltrarSit == 0 ? 'selected' : '' ?>>Todos</option>
+                  <option value="1" <?= $FiltrarSit == 1 ? 'selected' : '' ?>>Aguardando Atendimento</option>
+                  <option value="2" <?= $FiltrarSit == 2 ? 'selected' : '' ?>>Em Atendimento</option>
+                  <option value="3" <?= $FiltrarSit == 3 ? 'selected' : '' ?>>Finalizado</option>
+                </select>
+              </div>
 
-            <div class="form-group">
-              <label>Escolha a situação do chamado</label>
-              <select name="" id="" class="form-control">
-                <option value="">Todos</option>
-              </select>
-            </div>
-
-            <button class="btn btn-warning"> Pesquisar </button>
-
+              <button class="btn btn-warning" name="btn_pesquisar"> Pesquisar </button>
+            </form>
             <hr>
 
+          <?php if (isset($chamados) && count($chamados) > 0) { ?>
             <div class="row">
               <div class="col-12">
                 <div class="card">
@@ -79,29 +99,28 @@
                           <th>Funcionário</th>
                           <th>Equipamento</th>
                           <th>Problema</th>
-                          <th>Data Atendimento</th>
-                          <th>Técnico</th>
-                          <th>Data Encerramento</th>
-                          <th>Laudo</th>
+                          <th>Setor</th>
+                          <th>Situação</th>
                           <th>Ação</th>
                         </tr>
                       </thead>
                       <tbody>
+                      <?php foreach ($chamados as $item) { ?>
                         <tr>
-                          <td>(nome)</td>
-                          <td>(funcionario)</td>
-                          <td>(equipamento)</td>
-                          <td>(problema)</td>
-                          <td>(data atendimento)</td>
-                          <td>(tecnico)</td>
-                          <td>(data encerramento)</td>
-                          <td>(laudo)</td>
+                          <td><?= UtilCTRL::DataExibir($item['data_chamado']) . ' às ' . $item['hora_chamado'] ?></td>
+                          <td><?= $item['nome_funcionario'] ?></td>
+                          <td><?= 'Identificação: ' . $item['ident_equip'] ?> <br> <?= 'Descrição: ' . $item['desc_equip'] ?></td>
+                          <td><?= $item['desc_problema'] ?></td>
+                          <td><?= $item['nome_setor'] ?></td>
+                          <td>
+                            <?= UtilCTRL::StuacaoChamado($item['data_atendimento'],$item['data_encerramento']) ?>
+                          </td>
                           <td>
                             <a href="#" class="btn btn-warning btn-xs">Ver mais...</a>
                           </td>
 
                         </tr>
-
+                        <?php } ?>
                       </tbody>
                     </table>
                   </div>
@@ -110,6 +129,7 @@
                 <!-- /.card -->
               </div>
             </div>
+          <?php } ?>
 
           </div>
         </div>
@@ -123,6 +143,7 @@
     <?php
 
     include_once '../../template/_footer.php';
+    include_once '../../template/_msg.php';
 
     ?>
 

@@ -75,7 +75,7 @@ if (isset($_POST['btn_pesquisar'])) {
                 <select name="situacao" id="situacao" class="form-control">
                   <option value="0" <?= $FiltrarSit == 0 ? 'selected' : '' ?>>Todos</option>
                   <option value="1" <?= $FiltrarSit == 1 ? 'selected' : '' ?>>Aguardando Atendimento</option>
-                  <option value="2" <?= $FiltrarSit == 2 ? 'selected' : '' ?>>Em Atendidmento</option>
+                  <option value="2" <?= $FiltrarSit == 2 ? 'selected' : '' ?>>Em Atendimento</option>
                   <option value="3" <?= $FiltrarSit == 3 ? 'selected' : '' ?>>Finalizado</option>
                 </select>
               </div>
@@ -115,14 +115,16 @@ if (isset($_POST['btn_pesquisar'])) {
                               <td><?= $item['desc_problema'] ?></td>
                               <td>
                                 <?php if ($item['data_atendimento'] != '') { ?>
-                                  <a href="#" data_toggle="modal" data-target="#modal-detalhe" class="btn btn-warning btn-sm" onclick="return CarregarModalDetalharAtendimento('<?= $item['data_atendimento'] . ' às ' . $item['hora_atendimento'] ?>', '<?= $item['data_encerramento'] . ' às ' . $item['hora_encerramento'] ?>', '<?= $item['nome_tecnico'] ?>', '<?= $item['laudo_chamado'] ?>')">Ver atendimento...</a>
-                                <?php } else { echo '<i>Aguardando Atendimento</i>'; } ?>
+                                  <a href="#" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-detalhe" onclick="return CarregarModalDetalharAtendimento('<?= UtilCTRL::DataExibir($item['data_atendimento']) . ' às ' . $item['hora_atendimento'] ?>', '<?= $item['data_encerramento'] != '' ? UtilCTRL::DataExibir($item['data_encerramento']) . ' às ' . $item['hora_encerramento'] : 'Em andamento...' ?>', '<?= $item['nome_tecnico'] ?>', '<?= $item['laudo_chamado'] != '' ? $item['laudo_chamado'] : 'Em andamento...' ?>')">Ver atendimento...</a>
+                                <?php } else {
+                                  echo '<i>Aguardando Atendimento</i>';
+                                } ?>
                               </td>
                             </tr>
                           <?php } ?>
                         </tbody>
                       </table>
-                      <?php include_once 'modal/_ver_atendimento.php'; ?>
+                        <?php include_once 'modal/_ver_atendimento.php'; ?>
                     </div>
                     <!-- /.card-body -->
                   </div>

@@ -18,7 +18,8 @@ class UtilCTRL
         $_SESSION['setor'] = $idSetor;
     }
 
-    public static function Deslogar(){
+    public static function Deslogar()
+    {
         self::IniciarSessao();
         unset($_SESSION['cod']);
         unset($_SESSION['tipo']);
@@ -27,13 +28,15 @@ class UtilCTRL
         self::VoltarPaginaLogin();
     }
 
-    public static function VerificarLogado(){
-        if(!isset($_SESSION['cod']) || $_SESSION['cod'] == '' ){
+    public static function VerificarLogado()
+    {
+        if (!isset($_SESSION['cod']) || $_SESSION['cod'] == '') {
             self::VoltarPaginaLogin();
         }
     }
 
-    public static function VoltarPaginaLogin(){
+    public static function VoltarPaginaLogin()
+    {
         header('location: http://localhost/ControleosVEP/acesso/login/acessar.php');
         exit;
     }
@@ -101,7 +104,21 @@ class UtilCTRL
         self::setarFusoHorario();
         return date('Y-m-d');
     }
-    public static function DataExibir($data){
+    public static function DataExibir($data)
+    {
         return explode('-', $data)[2] . '/' . explode('-', $data)[1] . '/' . explode('-', $data)[0];
+    }
+    public static function StuacaoChamado($dataAtendimento, $dataEncerramento)
+    {
+
+        $sit = '';
+        if ($dataAtendimento != '' && $dataEncerramento != '') {
+            $sit = '<i>Encerrado</i>';
+        } else if ($dataAtendimento == '') {
+            $sit = '<i>Aguardando Atendimento</i>';
+        } else if ($dataAtendimento != '' && $dataEncerramento == ''){
+            $sit = '<i>Em Atendimento</i>';
+        }
+        return $sit;
     }
 }
