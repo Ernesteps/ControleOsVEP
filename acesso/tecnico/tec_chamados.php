@@ -10,7 +10,7 @@ if(isset($_POST['btn_pesquisar'])) {
 
   $ctrl_chamado = new ChamadoCTRL();
   $FiltrarSit = $_POST['situacao'];
-  $chamados = $ctrl_chamado->FiltrarChamadosTecCTRL($FiltrarSit);
+  $chamados = $ctrl_chamado->FiltrarChamadosTecCTRL(null, $FiltrarSit);
 
   if(count($chamados) == 0)
     $ret = 8;
@@ -116,7 +116,7 @@ if(isset($_POST['btn_pesquisar'])) {
                             <?= UtilCTRL::StuacaoChamado($item['data_atendimento'],$item['data_encerramento']) ?>
                           </td>
                           <td>
-                            <a href="#" class="btn btn-warning btn-xs">Ver mais...</a>
+                            <a href="tec_atenderchamado.php?cod=<?= $item['id_chamado'] ?>" class="btn btn-warning btn-xs">Ver mais...</a>
                           </td>
 
                         </tr>

@@ -2,6 +2,8 @@
 require_once 'Conexao.php';
 
 define('InserirChamado', 'InserirChamadoDAO');
+define('AtenderChamadoTecnico', 'AtenderChamadoDAO');
+define('EncerrarChamadoTecnico', 'EncerrarChamadoDAO');
 
 class ChamadoDAO extends Conexao
 {
@@ -70,13 +72,14 @@ class ChamadoDAO extends Conexao
         return $this->sql->fetchAll();
     }
 
-    public function FiltrarChamadosTec($FiltrarSit)
+    public function FiltrarChamadosTec($cod, $FiltrarSit)
     {
         $comando_sql = 'select cha.id_chamado,
                                cha.data_chamado,
                                cha.data_atendimento,
                                cha.data_encerramento,
                                cha.hora_chamado,
+                               cha.laudo_chamado,
                                usu_func.nome_usuario as nome_funcionario,
                                equip.ident_equip,
                                equip.desc_equip,
@@ -100,15 +103,22 @@ class ChamadoDAO extends Conexao
         if ($FiltrarSit == 1)
             $comando_sql .= ' where cha.data_atendimento is null';
 
-        if ($FiltrarSit == 2)
+        else if ($FiltrarSit == 2)
             $comando_sql .= ' where cha.data_atendimento is not null and cha.data_encerramento is null';
 
-        if ($FiltrarSit == 3)
+        else if ($FiltrarSit == 3)
             $comando_sql .= ' where cha.data_encerramento is not null';
+
+        else if ($cod != null)
+            $comando_sql .= ' where cha.id_chamado = ?';
         
         $comando_sql .= ' order by cha.id_chamado DESC';
 
         $this->sql = $this->conexao->prepare($comando_sql);
+
+        if ($cod != null)
+            $this->sql->bindValue(1, $cod);
+
         $this->sql->setFetchMode(PDO::FETCH_ASSOC);
         $this->sql->execute();
 
@@ -175,6 +185,52 @@ class ChamadoDAO extends Conexao
         } catch (Exception $ex) {
             $this->conexao->rollBack();
             parent::GravarErro($ex->getMessage(), $idUser, InserirChamado);
+            return -1;
+        }
+    }
+
+    public function AtenderChamadoDAO(ChamadoVO $vo, $idUser)
+    {
+        $comando_sql = 'update tb_chamado
+                            set id_usuario_tec = ?,
+                                data_atendimento = ?,
+                                hora_atendimento = ?
+                            where id_chamado = ?';
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $i = 1;
+        $this->sql->bindValue($i++, $idUser);
+        $this->sql->bindValue($i++, $vo->getData_Atendimento());
+        $this->sql->bindValue($i++, $vo->getHora_Atendimento());
+        $this->sql->bindValue($i++, $vo->getId_Chamado());
+
+        try {
+            $this->sql->execute();
+            return 9;
+        } catch (Exception $ex) {
+            parent::GravarErro($ex->getMessage(), $idUser, AtenderChamadoTecnico);
+            return -1;
+        }
+    }
+
+    public function EncerrarChamadoDAO(ChamadoVO $vo, $idUser)
+    {
+        $comando_sql = 'update tb_chamado
+                            set data_encerramento = ?,
+                                hora_encerramento = ?,
+                                laudo_chamado = ?
+                            where id_chamado = ?';
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $i = 1;
+        $this->sql->bindValue($i++, $vo->getData_Encerramento());
+        $this->sql->bindValue($i++, $vo->getHora_Encerramento());
+        $this->sql->bindValue($i++, $vo->getLaudo_Chamado());
+        $this->sql->bindValue($i++, $vo->getId_Chamado());
+
+        try {
+            $this->sql->execute();
+            return 10;
+        } catch (Exception $ex) {
+            parent::GravarErro($ex->getMessage(), $idUser, EncerrarChamadoTecnico);
             return -1;
         }
     }

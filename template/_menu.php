@@ -162,15 +162,15 @@ if (isset($_GET['close']) && $_GET['close'] == '1') {
 
         <?php } else if ($tipo == 3) { ?>
 
-          <li class="nav-item">
-            <a href="tec_atenderfinalizarchamado.php" class="nav-link">
+          <!--<li class="nav-item">
+            <a href="tec_atenderchamado.php" class="nav-link">
               <i class="nav-icon far fa-edit"></i>
               <p>
                 Atender Chamado
               </p>
             </a>
           </li>
-
+          -->
           <li class="nav-item">
             <a href="tec_chamados.php" class="nav-link">
               <i class="nav-icon far fa-edit"></i>

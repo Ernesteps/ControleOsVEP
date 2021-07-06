@@ -46,6 +46,13 @@ function RetornarMsg(num) {
             msg = 'Não foi encontrado registro.'
             break;
 
+        case 9:
+            msg = 'Atendimento ao chamado iniciado.'
+            break;
+
+        case 10:
+            msg = 'Chamado Encerrado.'
+            break;
     }
 
     return msg;

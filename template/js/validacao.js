@@ -166,7 +166,14 @@ function ValidarTela(tela) {
                 toastr.warning(RetornarMsg(0));
                 ret = false;
             }
-            break;     
+            break;
+
+        case 21: // Tela de Chamado Técnico (Laudo)
+            if ($("#laudo").val().trim() == '') {
+                toastr.warning(RetornarMsg(0));
+                ret = false;
+            }
+            break;
     }
 
     return ret;

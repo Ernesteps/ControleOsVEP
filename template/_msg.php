@@ -49,5 +49,13 @@ if (isset($ret)) {
         case 8:
             echo "<script>toastr.info(RetornarMsg(8))</script>";
             break;
+
+        case 9:
+            echo "<script>toastr.info(RetornarMsg(9))</script>";
+            break;
+
+        case 10:
+            echo "<script>toastr.success(RetornarMsg(10))</script>";
+            break;
     }
 }
