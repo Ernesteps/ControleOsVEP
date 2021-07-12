@@ -1,5 +1,7 @@
 <?php
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOsVEP/CTRL/UtilCTRL.php';
+
     Class TipoVO{
         private $idTipo;
         private $nome;
@@ -12,7 +14,7 @@
         }
 
         public function setNome($nome){
-            $this->nome = trim($nome);
+            $this->nome = UtilCTRL::TirarCaracteresEspeciais($nome);
         }
         public function getNome(){
             return $this->nome;

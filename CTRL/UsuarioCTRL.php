@@ -129,6 +129,7 @@ class UsuarioCTRL
         if ($vo->getTipo() == '' || $vo->getNome() == '' || $vo->getCPF() == '') {
             return 0;
         }
+        $vo->setCPF(UtilCTRL::TirarCaracteresEspeciais($vo->getCPF()));
 
         $vo->setdtCad(UtilCTRL::DataAtual());
         $vo->setStatus(1);
@@ -180,6 +181,7 @@ class UsuarioCTRL
     public function VerificarCPFCadastro($cpf, $id)
     {
         $dao = new UsuarioDAO();
+        $cpf = UtilCTRL::TirarCaracteresEspeciais($cpf);
         return $dao->VerificarCPFCadastro($cpf, $id);
     }
 

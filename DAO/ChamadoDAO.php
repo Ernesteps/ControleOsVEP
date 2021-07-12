@@ -78,6 +78,7 @@ class ChamadoDAO extends Conexao
                                cha.data_chamado,
                                cha.data_atendimento,
                                cha.data_encerramento,
+                               cha.hora_encerramento,
                                cha.hora_chamado,
                                cha.laudo_chamado,
                                usu_func.nome_usuario as nome_funcionario,
@@ -217,13 +218,15 @@ class ChamadoDAO extends Conexao
         $comando_sql = 'update tb_chamado
                             set data_encerramento = ?,
                                 hora_encerramento = ?,
-                                laudo_chamado = ?
+                                laudo_chamado = ?,
+                                id_usuario_tec
                             where id_chamado = ?';
         $this->sql = $this->conexao->prepare($comando_sql);
         $i = 1;
         $this->sql->bindValue($i++, $vo->getData_Encerramento());
         $this->sql->bindValue($i++, $vo->getHora_Encerramento());
         $this->sql->bindValue($i++, $vo->getLaudo_Chamado());
+        $this->sql->bindValue($i++, $idUser);
         $this->sql->bindValue($i++, $vo->getId_Chamado());
 
         try {

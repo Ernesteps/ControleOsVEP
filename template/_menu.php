@@ -29,6 +29,15 @@ if (isset($_GET['close']) && $_GET['close'] == '1') {
                with font-awesome or any other icon font library -->
         <?php if ($tipo == 1) { ?>
           <li class="nav-item">
+            <a href="adm_inicial.php" class="nav-link">
+              <i class="nav-icon far fa-edit"></i>
+              <p>
+                Inicial
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a href="adm_setor.php" class="nav-link">
               <i class="nav-icon far fa-edit"></i>
               <p>

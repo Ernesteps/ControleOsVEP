@@ -108,6 +108,14 @@ class UtilCTRL
     {
         return explode('-', $data)[2] . '/' . explode('-', $data)[1] . '/' . explode('-', $data)[0];
     }
+
+    public static function TirarCaracteresEspeciais($str){
+        $especial = array('_', '(', '.', '-', '!', ' ', '/', '\\', ')', '*');
+        $str_limpa = str_replace($especial, '', $str);
+
+        return $str_limpa;
+    }
+
     public static function StuacaoChamado($dataAtendimento, $dataEncerramento)
     {
 

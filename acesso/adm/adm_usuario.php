@@ -131,7 +131,7 @@ $setores = $ctrl_setor->ConsultarSetorCTRL();
 
                 <div class="form-group">
                   <label>CPF</label>
-                  <input name="cpf" id="cpf" onchange="ValidarCPFCadastro(this.value)" class="form-control" placeholder="Digite aqui...">
+                  <input name="cpf" id="cpf" onchange="ValidarCPFCadastro(this.value)" class="form-control num cpf" placeholder="Digite aqui...">
                   <label id="val_cpf" style="color: red; display: none"></label>
                 </div>
               </div>

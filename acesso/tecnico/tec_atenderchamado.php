@@ -145,14 +145,12 @@ if (isset($_POST['btn_finalizar'])) {
                                 </div>
                             <?php } ?>
 
-
-
                             <?php if ($dados[0]['data_atendimento'] == null) { ?>
                                 <button class="btn btn-success" name="btn_atender" id="btn_atender"> Atender </button>
                             <?php } else if (isset($dados[0]['data_atendimento']) && $dados[0]['data_encerramento'] == null) { ?>
                                 <button class="btn btn-success" name="btn_finalizar" id="btn_finalizar" onclick="return ValidarTela(21)"> Finalizar </button>
                             <?php } else { ?>
-                                <a href="tec_chamados.php" class="btn btn-success">OK</a>
+                            <center><i>Encerrado no dia <?= UtilCTRL::DataExibir($dados[0]['data_encerramento']) . ' às ' . $dados[0]['hora_encerramento'] ?></i></center>
                             <?php } ?>
 
                         </form>
