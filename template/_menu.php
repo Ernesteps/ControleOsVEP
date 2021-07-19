@@ -38,6 +38,15 @@ if (isset($_GET['close']) && $_GET['close'] == '1') {
           </li>
 
           <li class="nav-item">
+            <a href="adm_verchamados.php" class="nav-link">
+              <i class="nav-icon far fa-edit"></i>
+              <p>
+                Ver Chamados / PDF
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
             <a href="adm_setor.php" class="nav-link">
               <i class="nav-icon far fa-edit"></i>
               <p>

@@ -1,9 +1,8 @@
 <?php
-
+require_once '_vertipo_adm.php';
 require_once '../../CTRL/EquipamentoCTRL.php';
 require_once '../../VO/EquipamentoVO.php';
 require_once '../../CTRL/ModeloCTRL.php';
-require_once '../../CTRL/UtilCTRL.php';
 require_once '../../CTRL/TipoequipCTRL.php';
 
 $ctrl_mod = new ModeloCTRL();

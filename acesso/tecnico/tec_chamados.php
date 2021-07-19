@@ -1,8 +1,7 @@
 <!-- http://localhost/controleosvep/ -->
 <?php
-
+require_once '_vertipo_tec.php';
 require_once '../../CTRL/ChamadoCTRL.php';
-require_once '../../CTRL/UtilCTRL.php';
 
 $FiltrarSit = '';
 

@@ -1,7 +1,6 @@
 <?php
-
+require_once '_vertipo_adm.php';
 require_once '../../CTRL/UsuarioCTRL.php';
-require_once '../../CTRL/UtilCTRL.php';
 
 $ctrl_usuario = new UsuarioCTRL();
 $nome_filtro = '';

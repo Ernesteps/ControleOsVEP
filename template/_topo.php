@@ -1,4 +1,7 @@
-<!-- Navbar Line 24 blank.html -->
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/ControleOsVEP/CTRL/UtilCTRL.php';
+UtilCTRL::VerificarLogado();
+?>
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
   <!-- Left navbar links -->
   <ul class="navbar-nav">

@@ -1,11 +1,10 @@
 <?php
-
+require_once '_vertipo_adm.php';
 require_once '../../CTRL/UsuarioCTRL.php';
 require_once '../../VO/UsuarioVO.php';
 require_once '../../VO/TecnicoVO.php';
 require_once '../../VO/FuncionarioVO.php';
 require_once '../../CTRL/SetorCTRL.php';
-require_once '../../CTRL/UtilCTRL.php';
 
 //Testa a URL: se tem a chave e o valor é numérico
 if (isset($_GET['cod']) && is_numeric($_GET['cod'])) {

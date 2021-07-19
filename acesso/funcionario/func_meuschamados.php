@@ -1,7 +1,6 @@
 <?php
-
+require_once '_vertipo_fun.php';
 require_once '../../CTRL/ChamadoCTRL.php';
-require_once '../../CTRL/UtilCTRL.php';
 
 $FiltrarSit = '';
 

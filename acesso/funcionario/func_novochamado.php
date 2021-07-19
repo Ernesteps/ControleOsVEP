@@ -1,7 +1,6 @@
 <?php
-
+require_once '_vertipo_fun.php';
 require_once '../../CTRL/UsuarioCTRL.php';
-require_once '../../CTRL/UtilCTRL.php';
 require_once '../../CTRL/ChamadoCTRL.php';
 require_once '../../VO/ChamadoVO.php';
 require_once '../../VO/AlocarEquipVO.php';

@@ -5,6 +5,12 @@ require_once 'UtilCTRL.php';
 
 class ChamadoCTRL
 {
+    public function CarregarGraficoInicial()
+    {
+        $dao = new ChamadoDAO();
+        return $dao->CarregarGraficoInicial();
+    }
+
     public function CarregarEquipamentosSetorCTRL()
     {
         $dao = new ChamadoDAO();
