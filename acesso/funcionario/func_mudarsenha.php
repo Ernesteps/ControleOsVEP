@@ -1,6 +1,6 @@
 <?php
+require_once '_vertipo_fun.php';
 require_once '../../CTRL/UsuarioCTRL.php';
-require_once '../../CTRL/UtilCTRL.php';
 
 $ctrl = new UsuarioCTRL();
 

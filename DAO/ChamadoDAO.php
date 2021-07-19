@@ -52,18 +52,18 @@ class ChamadoDAO extends Conexao
                         inner join tb_alocar_equip as alo
                             on alo.id_equipamento = equip.id_equipamento
                         where alo.id_setor = ?';
-            
+
         if ($FiltrarSit == 1) // Aguardando Atendimento
             $comando_sql .= ' and cha.data_atendimento is null and alo.sit_alocar = 3';
-                  
+
         else if ($FiltrarSit == 2) //Em atendimento
-            $comando_sql .= ' and cha.data_atendimento is not null and cha.data_encerramento is null and alo.sit_alocar = 3'; 
-                            
+            $comando_sql .= ' and cha.data_atendimento is not null and cha.data_encerramento is null and alo.sit_alocar = 3';
+
         else if ($FiltrarSit == 3) //Atendido
             $comando_sql .= ' and cha.data_encerramento is not null and alo.sit_alocar = 1';
 
         $comando_sql .= ' order by cha.id_chamado DESC';
-        
+
         $this->sql = $this->conexao->prepare($comando_sql);
         $this->sql->bindValue(1, $idSetor);
         $this->sql->setFetchMode(PDO::FETCH_ASSOC);
@@ -112,7 +112,7 @@ class ChamadoDAO extends Conexao
 
         else if ($cod != null)
             $comando_sql .= ' where cha.id_chamado = ?';
-        
+
         $comando_sql .= ' order by cha.id_chamado DESC';
 
         $this->sql = $this->conexao->prepare($comando_sql);
@@ -236,5 +236,17 @@ class ChamadoDAO extends Conexao
             parent::GravarErro($ex->getMessage(), $idUser, EncerrarChamadoTecnico);
             return -1;
         }
+    }
+
+    public function CarregarGraficoInicial()
+    {
+        $comando_sql = 'select
+                            (select count(id_equipamento) from tb_chamado where data_atendimento is null) as aguardando,
+                            (select count(id_equipamento) from tb_chamado where data_atendimento is not null and data_encerramento is null) as atendimento,
+                            (select count(id_equipamento) from tb_chamado where data_encerramento is not null) as finalizado';
+
+        $this->sql = $this->conexao->prepare($comando_sql);
+        $this->sql->execute();
+        return $this->sql->fetchAll(PDO::FETCH_ASSOC);
     }
 }

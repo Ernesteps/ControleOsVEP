@@ -28,6 +28,14 @@ class UtilCTRL
         self::VoltarPaginaLogin();
     }
 
+    public static function VerTipoAcesso($tipo)
+    {
+        self::IniciarSessao();
+        if($tipo != $_SESSION['tipo']){
+            self::Deslogar();
+        }
+    }
+
     public static function VerificarLogado()
     {
         if (!isset($_SESSION['cod']) || $_SESSION['cod'] == '') {

@@ -1,5 +1,5 @@
 <?php
-
+require_once '_vertipo_adm.php';
 require_once '../../CTRL/UsuarioCTRL.php';
 require_once '../../VO/UsuarioVO.php';
 require_once '../../VO/TecnicoVO.php';

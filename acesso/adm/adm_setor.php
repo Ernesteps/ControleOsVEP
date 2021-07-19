@@ -1,5 +1,5 @@
 <?php
-
+require_once '_vertipo_adm.php';
 require_once '../../CTRL/SetorCTRL.php';
 require_once '../../VO/SetorVO.php';
 

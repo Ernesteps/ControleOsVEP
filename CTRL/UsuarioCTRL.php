@@ -30,7 +30,7 @@ class UsuarioCTRL
 
             switch ($tipo) {
                 case 1:
-                    header('location: http://localhost/ControleosVEP/acesso/adm/adm_usuario.php');
+                    header('location: http://localhost/ControleosVEP/acesso/adm/adm_inicial.php');
                     exit;
                     break;
 
